@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="{{ language.value }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ answer.page == 'home' ? t('site.name') : answer.title ~ ' · ' ~ t('site.name') }}</title>
+  {% if answer.description %}
+  <meta name="description" content="{{ answer.description }}">
+  {% endif %}
+  {% if answer.status == 404 or answer.status == 503 %}
+  <meta name="robots" content="noindex">
+  {% endif %}
+  {% if answer.alternates is not empty %}
+  <link rel="canonical" href="{{ site_url ~ answer.alternates[language.value] }}">
+  {% for code, path in answer.alternates %}
+  <link rel="alternate" hreflang="{{ code }}" href="{{ site_url ~ path }}">
+  {% endfor %}
+  <link rel="alternate" hreflang="x-default" href="{{ site_url }}/">
+  {% endif %}
+</head>
+<body>
+<div class="events-site">
+  <header class="site-head">
+    <div class="wrap">
+      <a class="brand" href="{{ path('home') }}">{{ t('site.name') }}</a>
+      <nav class="nav" aria-label="{{ t('nav.label') }}">
+        <a href="{{ path('events') }}"{% if answer.page == 'events' %} aria-current="page"{% endif %}>{{ t('nav.events') }}</a>
+        <a href="{{ path('suggest') }}"{% if answer.page == 'suggest' %} aria-current="page"{% endif %}>{{ t('nav.suggest') }}</a>
+      </nav>
+      <p class="lang">
+        {# The same page in the other language, or its front page when this is no page (not found). #}
+        <a href="{{ other ?? ('/' ~ language.other.value ~ '/') }}" lang="{{ language.other.value }}" hreflang="{{ language.other.value }}">{{ t('nav.other') }}</a>
+      </p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    {# The page's content, already made by its own template, which escaped everything it was given. #}
+    {{ answer.content|raw }}
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <a href="{{ path('about') }}">{{ t('nav.about') }}</a>
+      <a href="{{ path('suggest') }}">{{ t('nav.suggest') }}</a>
+      <span>{{ t('foot.checked') }}</span>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

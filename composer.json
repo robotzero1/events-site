@@ -1,0 +1,35 @@
+{
+    "name": "robotzero1/events-site",
+    "description": "The public website of a regional events listing: plain PHP and Twig, built on a separate events API.",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "twig/twig": "^3.14"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "EventsSite\\": "src/",
+            "EventsSite\\Standalone\\": "standalone/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "EventsSite\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2.0"
+        }
+    }
+}

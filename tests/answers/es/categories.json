@@ -1,0 +1,25 @@
+{
+    "status": 200,
+    "answer": {
+        "data": [
+            {
+                "ref": "cine",
+                "name": "Cine",
+                "description": null,
+                "language": "es"
+            },
+            {
+                "ref": "mercados",
+                "name": "Mercados",
+                "description": null,
+                "language": "es"
+            },
+            {
+                "ref": "musica",
+                "name": "Música",
+                "description": null,
+                "language": "es"
+            }
+        ]
+    }
+}

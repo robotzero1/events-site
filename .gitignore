@@ -1,5 +1,5 @@
 /vendor/
 /var/
-/.env
+/config.local.php
 .phpunit.result.cache
 .phpunit.cache/
