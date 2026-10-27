@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% for stylesheet in stylesheets %}
+  <link rel="stylesheet" href="{{ stylesheet }}">
+  {% endfor %}
   <title>{{ answer.page == 'home' ? t('site.name') : answer.title ~ ' · ' ~ t('site.name') }}</title>
   {% if answer.description %}
   <meta name="description" content="{{ answer.description }}">
@@ -20,6 +23,7 @@
 </head>
 <body>
 <div class="events-site">
+  <a class="skip" href="#content">{{ t('nav.skip') }}</a>
   <header class="site-head">
     <div class="wrap">
       <a class="brand" href="{{ path('home') }}">{{ t('site.name') }}</a>
@@ -34,7 +38,7 @@
     </div>
   </header>
 
-  <main class="wrap">
+  <main class="wrap" id="content">
     {# The page's content, already made by its own template, which escaped everything it was given. #}
     {{ answer.content|raw }}
   </main>

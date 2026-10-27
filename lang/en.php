@@ -7,6 +7,7 @@ return [
     'site.description' => 'Concerts, markets, fiestas and films from Almuñécar to Motril.',
 
     'nav.label' => 'Main',
+    'nav.skip' => 'Skip to the content',
     'nav.events' => 'All events',
     'nav.suggest' => 'Suggest an event',
     'nav.about' => 'About this site',

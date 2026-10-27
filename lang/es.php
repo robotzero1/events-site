@@ -7,6 +7,7 @@ return [
     'site.description' => 'Conciertos, mercados, fiestas y cine de Almuñécar a Motril.',
 
     'nav.label' => 'Principal',
+    'nav.skip' => 'Saltar al contenido',
     'nav.events' => 'Todos los eventos',
     'nav.suggest' => 'Sugerir un evento',
     'nav.about' => 'Acerca de esta web',

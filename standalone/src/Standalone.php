@@ -20,6 +20,8 @@ final class Standalone
 {
     private Site $site;
 
+    private Assets $assets;
+
     /** @param string $siteUrl where the site answers, with no `/` at the end, for addresses given in full */
     public function __construct(
         Api $api,
@@ -28,8 +30,10 @@ final class Standalone
         private readonly Environment $twig,
         private readonly string $siteUrl,
         ?array $pages = null,
+        ?Assets $assets = null,
     ) {
         $this->site = new Site($api, $cache, $log, $twig, $pages);
+        $this->assets = $assets ?? Assets::standard();
     }
 
     /** The site as its configuration says (`config.php`). */
@@ -52,6 +56,10 @@ final class Standalone
 
     public function respond(Visit $visit): Response
     {
+        if (str_starts_with($visit->path, '/assets/')) {
+            return $this->assets->respond($visit->path) ?? new Response(404, ['Content-Type' => 'text/plain; charset=utf-8'], 'Not found');
+        }
+
         $answer = $this->site->answer($visit);
 
         if ($answer->isRedirect()) {
@@ -66,6 +74,7 @@ final class Standalone
             'answer' => $answer,
             'site_url' => $this->siteUrl,
             'other' => $answer->alternates[$answer->language->other()->value] ?? null,
+            'stylesheets' => [$this->assets->address('site.css'), $this->assets->address('frame.css')],
         ]);
 
         $headers = [

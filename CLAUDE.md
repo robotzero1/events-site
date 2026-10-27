@@ -13,7 +13,10 @@ The public website of the events listing: plain PHP 8.2+ with Twig, building eve
 - **Twig escapes everything** (`autoescape`, `strict_variables`); the one `|raw` is the frame putting in a page's content, which its own template made. What visitors and other websites wrote is never put in as HTML.
 - **Every word the site says** is in `lang/es.php` and `lang/en.php`, with the same keys (a test holds them to that), through `t()` in a template and `Strings` in PHP.
 - **Everything is inside one `<div class="events-site">`**, so that a WordPress theme and the site's CSS leave each other alone.
-- **The look is Almanaque** (#2, `docs/mockups/`): calm and text-led, an agenda by day.
+- **The look is Almanaque** (#2, `docs/mockups/`): calm and text-led, an agenda by day. It is `assets/site.css`, the core's, every rule under `.events-site` (`AssetsTest` holds it to that) and the layout by container queries on `.events-site`, not the window, so that it fits a theme's column. Its colours are custom properties on `.events-site`, and every pair read together passes WCAG AA (`ContrastTest`, which reads them from the file). The standalone frame's own few rules, outside `.events-site`, are `standalone/assets/frame.css`.
+- **Its one font is Source Serif 4, served by the site itself** (`assets/fonts/`, OFL, the Latin subset with every weight in one file), so that nothing is loaded from another website. Text is the system's sans.
+- **Stylesheets and fonts are sent from `/assets/`** (`Standalone\Assets`), a stylesheet's address carrying a fingerprint of its contents (`?v=`) and every one sent to be kept a year. Only a file of a kind it names, in its folders, is sent.
+- **The frame has a skip link** to `#content`, and every link and field shows the focus outline (`--focus`).
 
 ## Tests
 

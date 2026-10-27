@@ -12,6 +12,7 @@ It is plain PHP with Twig and builds every page on the server from a separate ev
 - **The API's answers are kept** (`Api\Asking`): Regions, Locations, Categories and Venue types for an hour, listings, events and Venues for five minutes, a Search never. Each is kept a day longer, and used when the API fails; with nothing kept, the page is a 503.
 - **Every request to the API** carries the page's language and the visitor's own address (`X-Forwarded-For`), so that the API counts each visitor as themselves.
 - **Twig escapes everything** it is given. What visitors and other websites wrote never goes into a page as HTML.
+- **The look** is `assets/site.css`, all of it inside `.events-site` and laid out by the width of that box rather than the window's, so that a WordPress theme and the site leave each other alone. Its font, Source Serif 4, is served by the site itself (`assets/fonts/`, under the SIL Open Font License), so a page loads nothing from another website. The standalone site sends both from `/assets/`, a stylesheet's address carrying a fingerprint of its contents. The mockups it came from are in `docs/mockups/`.
 
 ## Running it
 
