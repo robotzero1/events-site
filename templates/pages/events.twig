@@ -1,0 +1,114 @@
+{# What's on: the form of filters, then the events by day, or one by one for a Search best match first. #}
+<h1 class="page-title">{{ heading }}</h1>
+
+{% if refusals.form is defined %}
+<p class="refused" role="alert">{{ refusals.form }}</p>
+{% endif %}
+
+<div class="listing-grid">
+  <form class="filters" method="get" action="{{ path('events') }}" aria-label="{{ t('events.filters') }}">
+    <div>
+      <label for="f-q">{{ t('events.words') }}</label>
+      <input id="f-q" type="search" name="{{ field('q') }}" value="{{ filters.q ?? '' }}" placeholder="{{ t('events.wordsHint') }}"{% if refusals.q is defined %} aria-invalid="true" aria-describedby="f-q-refused"{% endif %}>
+      {% if refusals.q is defined %}<p class="refused" id="f-q-refused">{{ refusals.q }}</p>{% endif %}
+    </div>
+
+    {% if searching %}
+    <div>
+      <label for="f-sort">{{ t('events.sort') }}</label>
+      <select id="f-sort" name="{{ field('sort') }}">
+        <option value="relevance"{% if (filters.sort ?? 'relevance') == 'relevance' %} selected{% endif %}>{{ t('events.byRelevance') }}</option>
+        <option value="date"{% if (filters.sort ?? '') == 'date' %} selected{% endif %}>{{ t('events.byDate') }}</option>
+      </select>
+    </div>
+    {% endif %}
+
+    <div class="two">
+      <div>
+        <label for="f-from">{{ t('events.from') }}</label>
+        <input id="f-from" type="date" name="{{ field('from') }}" value="{{ filters.from ?? '' }}" aria-describedby="f-from-hint{% if refusals.from is defined %} f-from-refused{% endif %}"{% if refusals.from is defined %} aria-invalid="true"{% endif %}>
+        <small id="f-from-hint">{{ t('events.fromHint') }}</small>
+        {% if refusals.from is defined %}<p class="refused" id="f-from-refused">{{ refusals.from }}</p>{% endif %}
+      </div>
+      <div>
+        <label for="f-to">{{ t('events.to') }}</label>
+        <input id="f-to" type="date" name="{{ field('to') }}" value="{{ filters.to ?? '' }}"{% if refusals.to is defined %} aria-invalid="true" aria-describedby="f-to-refused"{% endif %}>
+        {% if refusals.to is defined %}<p class="refused" id="f-to-refused">{{ refusals.to }}</p>{% endif %}
+      </div>
+    </div>
+
+    <div class="two">
+      <div>
+        <label for="f-place">{{ t('events.place') }}</label>
+        <select id="f-place" name="{{ field('place') }}"{% if refusals.place is defined %} aria-invalid="true" aria-describedby="f-place-refused"{% endif %}>
+          <option value="">{{ t('events.anywhere') }}</option>
+          {% for region in places %}
+          <optgroup label="{{ region.name }}">
+            <option value="{{ region.value }}"{% if (filters.place ?? '') == region.value %} selected{% endif %}>{{ t('events.allOf', region.name) }}</option>
+            {% for location in region.locations %}
+            <option value="{{ location.value }}"{% if (filters.place ?? '') == location.value %} selected{% endif %}>{{ location.name }}</option>
+            {% endfor %}
+          </optgroup>
+          {% endfor %}
+        </select>
+        {% if refusals.place is defined %}<p class="refused" id="f-place-refused">{{ refusals.place }}</p>{% endif %}
+      </div>
+      <div>
+        <label for="f-category">{{ t('events.category') }}</label>
+        <select id="f-category" name="{{ field('category') }}"{% if refusals.category is defined %} aria-invalid="true" aria-describedby="f-category-refused"{% endif %}>
+          <option value="">{{ t('events.anything') }}</option>
+          {% for category in categories %}
+          <option value="{{ category.ref }}"{% if (filters.category ?? '') == category.ref %} selected{% endif %}>{{ category.name }}</option>
+          {% endfor %}
+        </select>
+        {% if refusals.category is defined %}<p class="refused" id="f-category-refused">{{ refusals.category }}</p>{% endif %}
+      </div>
+    </div>
+
+    <button type="submit">{{ t('events.show') }}</button>
+  </form>
+
+  <div class="results">
+    {% if refusals.sort is defined or refusals.page is defined %}
+    <p class="refused" role="alert">{{ refusals.sort ?? refusals.page }}</p>
+    {% endif %}
+
+    {% if events is not null %}
+    {% if total > 0 %}
+    <p class="count">
+      {{ total == 1 ? t('events.countOne') : t('events.countMany', total) }}{% if searching %} · {{ t('events.searchedFor', filters.q) }}{% endif %}
+    </p>
+    {% endif %}
+
+    {% if total == 0 %}
+    <p class="none">{{ searching ? t('events.noneFound', filters.q) : t('events.none') }}</p>
+    <p><a href="{{ path('events') }}">{{ t('events.widen') }}</a></p>
+    {% elseif events.one_by_one is defined %}
+    <ol class="events">
+      {% for line in events.one_by_one %}
+      {% include 'parts/event-line.twig' %}
+      {% endfor %}
+    </ol>
+    {% else %}
+    {% for day in events.by_day %}
+    <section class="day" aria-labelledby="day-{{ day.day }}">
+      <h2 id="day-{{ day.day }}">{{ day.heading }}{% if day.today %} <span class="today">{{ t('when.today') }}</span>{% endif %}</h2>
+      <ol class="events">
+        {% for line in day.lines %}
+        {% include 'parts/event-line.twig' %}
+        {% endfor %}
+      </ol>
+    </section>
+    {% endfor %}
+    {% endif %}
+
+    {% if pages > 1 %}
+    <nav class="pager" aria-label="{{ t('events.pages') }}">
+      {% if page > 1 %}<a href="{{ path('events', null, filters|merge({page: page - 1 > 1 ? page - 1 : ''})) }}" rel="prev">{{ t('events.previous') }}</a>{% endif %}
+      <span>{{ t('events.pageOf', page, pages) }}</span>
+      {% if page < pages %}<a href="{{ path('events', null, filters|merge({page: page + 1})) }}" rel="next">{{ t('events.next') }}</a>{% endif %}
+    </nav>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>

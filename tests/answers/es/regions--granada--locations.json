@@ -1,0 +1,19 @@
+{
+    "status": 200,
+    "answer": {
+        "data": [
+            {
+                "ref": "almunecar",
+                "name": "Almuñécar",
+                "description": null,
+                "language": "es"
+            },
+            {
+                "ref": "motril",
+                "name": "Motril",
+                "description": null,
+                "language": "es"
+            }
+        ]
+    }
+}

@@ -1,6 +1,7 @@
 <?php
 
-// Every word the site itself says, in English. The Spanish is `es.php`, with the same keys. A `%s` is filled in.
+// Every word the site itself says, in English. The Spanish is `es.php`, with the same keys. A `%s` or `%d` is
+// filled in, `%1$s` and the like in that order.
 
 return [
     'site.name' => "Costa Tropical · What's on",
@@ -25,4 +26,72 @@ return [
 
     'unavailable.title' => "Events can't be shown just now",
     'unavailable.body' => 'Something has gone wrong at our end. Please try again in a few minutes.',
+
+    // Days and months, Monday being 1.
+    'day.1' => 'Monday', 'day.2' => 'Tuesday', 'day.3' => 'Wednesday', 'day.4' => 'Thursday',
+    'day.5' => 'Friday', 'day.6' => 'Saturday', 'day.7' => 'Sunday',
+    'dayShort.1' => 'Mon', 'dayShort.2' => 'Tue', 'dayShort.3' => 'Wed', 'dayShort.4' => 'Thu',
+    'dayShort.5' => 'Fri', 'dayShort.6' => 'Sat', 'dayShort.7' => 'Sun',
+    'month.1' => 'January', 'month.2' => 'February', 'month.3' => 'March', 'month.4' => 'April',
+    'month.5' => 'May', 'month.6' => 'June', 'month.7' => 'July', 'month.8' => 'August',
+    'month.9' => 'September', 'month.10' => 'October', 'month.11' => 'November', 'month.12' => 'December',
+    'monthShort.1' => 'Jan', 'monthShort.2' => 'Feb', 'monthShort.3' => 'Mar', 'monthShort.4' => 'Apr',
+    'monthShort.5' => 'May', 'monthShort.6' => 'Jun', 'monthShort.7' => 'Jul', 'monthShort.8' => 'Aug',
+    'monthShort.9' => 'Sep', 'monthShort.10' => 'Oct', 'monthShort.11' => 'Nov', 'monthShort.12' => 'Dec',
+    // The day of the week, the date, the month and, if not this year, the year.
+    'when.day' => '%1$s %2$d %3$s',
+    'when.dayYear' => '%1$s %2$d %3$s %4$d',
+    'when.short' => '%1$s %2$d %3$s',
+    'when.dayAndTime' => '%1$s, %2$s',
+    'when.allDay' => 'All day',
+    'when.today' => 'Today',
+
+    // A line of a list of events.
+    'line.until' => 'until %s',
+    'line.moreOne' => 'and 1 more date',
+    'line.moreMany' => 'and %d more dates',
+    'line.price' => 'From %s €',
+    'line.ratingOne' => '%s · 1 review',
+    'line.ratingMany' => '%1$s · %2$d reviews',
+    'line.cancelled' => 'Cancelled',
+    'line.inSpanish' => 'In Spanish',
+    'line.inEnglish' => 'In English',
+
+    // The listing.
+    'events.title' => "What's on",
+    'events.titleIn' => "What's on in %s",
+    'events.description' => 'Everything coming up from Almuñécar to Motril: concerts, markets, fiestas, films and more.',
+    'events.filters' => 'Narrow the list',
+    'events.words' => 'Words',
+    'events.wordsHint' => 'Flamenco, market, cinema…',
+    'events.from' => 'From',
+    'events.fromHint' => 'Empty for today',
+    'events.to' => 'To',
+    'events.place' => 'Place',
+    'events.anywhere' => 'Anywhere',
+    'events.allOf' => 'All of %s',
+    'events.category' => 'Kind',
+    'events.anything' => 'Anything',
+    'events.sort' => 'Order',
+    'events.byRelevance' => 'Best match first',
+    'events.byDate' => 'Soonest first',
+    'events.show' => 'Show events',
+    'events.countOne' => '1 event',
+    'events.countMany' => '%d events',
+    'events.searchedFor' => 'Found by “%s”',
+    'events.none' => 'Nothing is on for what you asked.',
+    'events.noneFound' => 'Nothing was found for “%s”.',
+    'events.widen' => 'See everything coming up',
+    'events.previous' => 'Earlier page',
+    'events.next' => 'Later page',
+    'events.pageOf' => 'Page %1$d of %2$d',
+    'events.pages' => 'Pages',
+    'events.tooOften' => "You've searched a lot in a short time. Please wait a minute and try again.",
+    'events.refused.from' => "That isn't a day to look from.",
+    'events.refused.to' => "That isn't a day to look to, or it is before the first.",
+    'events.refused.place' => "That place isn't on the list.",
+    'events.refused.category' => "That kind of event isn't on the list.",
+    'events.refused.q' => 'Words to search for must be between 2 and 200 letters long.',
+    'events.refused.sort' => "That isn't an order the list can be in.",
+    'events.refused.page' => "That page isn't there.",
 ];

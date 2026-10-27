@@ -79,6 +79,12 @@ final class Addresses
         return $query === [] ? $path : $path . '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986);
     }
 
+    /** The name of a listing's filter in a language's addresses, as a form names its field: `desde`, `from`. */
+    public static function filterName(string $filter, Language $language): string
+    {
+        return self::FILTERS[$filter][$language->value];
+    }
+
     /** The same page in the other language, filters and all. */
     public static function inOther(Route $route): string
     {

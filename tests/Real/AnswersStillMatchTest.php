@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EventsSite\Tests\Real;
 
 use EventsSite\Api\NotThere;
+use EventsSite\Api\Refused;
 use EventsSite\Language;
 use EventsSite\Standalone\CurlApi;
 use EventsSite\Tests\Support\SavedApi;
@@ -41,6 +42,8 @@ final class AnswersStillMatchTest extends TestCase
             $live = ['status' => 200, 'answer' => (new CurlApi($base, seconds: 30))->get($path, $query, $language, '127.0.0.1')];
         } catch (NotThere) {
             $live = ['status' => 404, 'answer' => null];
+        } catch (Refused $refused) {
+            $live = ['status' => $refused->status, 'answer' => ['message' => $refused->getMessage(), 'errors' => $refused->fields]];
         }
 
         $this->assertSame($saved['status'], $live['status']);

@@ -7,6 +7,7 @@ namespace EventsSite\Standalone;
 use EventsSite\Api\Api;
 use EventsSite\Api\ApiFailed;
 use EventsSite\Api\NotThere;
+use EventsSite\Api\Refused;
 use EventsSite\Language;
 
 /**
@@ -59,11 +60,16 @@ final class CurlApi implements Api
             throw new NotThere($path);
         }
 
+        $answer = json_decode((string) $body, true);
+
+        if ($status === 422 || $status === 429) {
+            throw new Refused($status, is_array($answer['errors'] ?? null) ? $answer['errors'] : [], (string) ($answer['message'] ?? ''));
+        }
+
         if ($status !== 200) {
             throw new ApiFailed("{$path} answered {$status}");
         }
 
-        $answer = json_decode((string) $body, true);
 
         if (!is_array($answer)) {
             throw new ApiFailed("{$path} did not answer with JSON");

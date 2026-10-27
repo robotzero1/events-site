@@ -161,7 +161,7 @@ final class SiteTest extends TestCase
 
     public function test_a_page_not_built_yet_is_not_found(): void
     {
-        $this->assertSame(404, $this->visit('/en/events')->status);
+        $this->assertSame(404, $this->visit('/en/suggest')->status);
     }
 
     public function test_a_page_asks_the_api_with_the_visitors_address_and_its_language(): void

@@ -1,0 +1,11 @@
+{
+    "status": 422,
+    "answer": {
+        "message": "The selected location is invalid.",
+        "errors": {
+            "location": [
+                "The selected location is invalid."
+            ]
+        }
+    }
+}

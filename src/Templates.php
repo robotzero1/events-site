@@ -47,6 +47,12 @@ final class Templates
             ['needs_context' => true],
         ));
 
+        $twig->addFunction(new TwigFunction(
+            'field',
+            fn (array $context, string $filter): string => Addresses::filterName($filter, $context['language']),
+            ['needs_context' => true],
+        ));
+
         return $twig;
     }
 }

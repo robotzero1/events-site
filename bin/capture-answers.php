@@ -8,6 +8,7 @@ declare(strict_types=1);
 //     php bin/with-local-api.php php bin/capture-answers.php
 
 use EventsSite\Api\NotThere;
+use EventsSite\Api\Refused;
 use EventsSite\Language;
 use EventsSite\Standalone\CurlApi;
 use EventsSite\Tests\Support\SavedApi;
@@ -24,6 +25,8 @@ foreach (require dirname(__DIR__) . '/tests/answers/questions.php' as [$path, $q
         $saved = ['status' => 200, 'answer' => $api->get($path, $query, $language, '127.0.0.1')];
     } catch (NotThere) {
         $saved = ['status' => 404, 'answer' => null];
+    } catch (Refused $refused) {
+        $saved = ['status' => $refused->status, 'answer' => ['message' => $refused->getMessage(), 'errors' => $refused->fields]];
     }
 
     $file = SavedApi::fileFor($path, $query, $language);
@@ -32,3 +35,8 @@ foreach (require dirname(__DIR__) . '/tests/answers/questions.php' as [$path, $q
 
     echo "{$language->value} {$path}: {$saved['status']}\n";
 }
+
+// The known state's days are counted from the day it was made, so the tests take this as today.
+$today = (new DateTimeImmutable('now', new DateTimeZone('Europe/Madrid')))->format('Y-m-d');
+file_put_contents(dirname(__DIR__) . '/tests/answers/today.txt', $today . "\n");
+echo "Captured on {$today}.\n";

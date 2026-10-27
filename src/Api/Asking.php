@@ -27,6 +27,9 @@ final class Asking
     /** How long past its lifetime an answer is kept, for when the API fails. */
     public const GRACE = 86400;
 
+    /** The site's one time zone, the API's: every day and time is one there. */
+    public const TIME_ZONE = 'Europe/Madrid';
+
     private Closure $now;
 
     public function __construct(
@@ -43,6 +46,12 @@ final class Asking
     public function language(): Language
     {
         return $this->language;
+    }
+
+    /** Today in Spain, `2026-10-30`, by the same clock that times what is kept. */
+    public function today(): string
+    {
+        return (new \DateTimeImmutable('@' . ($this->now)()))->setTimezone(new \DateTimeZone(self::TIME_ZONE))->format('Y-m-d');
     }
 
     /**

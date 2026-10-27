@@ -1,0 +1,175 @@
+{
+    "status": 200,
+    "answer": {
+        "data": [
+            {
+                "ref": "book-fair",
+                "name": "Book fair",
+                "description": "New and second-hand books under the arcades, with readings in the evening.",
+                "language": "en",
+                "status": "published",
+                "price_from": null,
+                "photo": null,
+                "rating": 4,
+                "review_count": 1,
+                "categories": [
+                    {
+                        "ref": "mercados",
+                        "name": "Markets",
+                        "description": null,
+                        "language": "en"
+                    }
+                ],
+                "occurrences": [
+                    {
+                        "ref": "gi1swoc5",
+                        "all_day": true,
+                        "starts_at": "2026-10-27",
+                        "finishes_at": "2026-10-29",
+                        "cancelled": false
+                    }
+                ],
+                "venue": null,
+                "location": {
+                    "ref": "motril",
+                    "name": "Motril",
+                    "description": null,
+                    "language": "es",
+                    "region": {
+                        "ref": "granada",
+                        "name": "Granada",
+                        "description": null,
+                        "language": "es"
+                    }
+                }
+            },
+            {
+                "ref": "el-espiritu-de-la-colmena",
+                "name": "The Spirit of the Beehive",
+                "description": "A screening of Víctor Erice's film of 1973.",
+                "language": "en",
+                "status": "published",
+                "price_from": null,
+                "photo": null,
+                "rating": null,
+                "review_count": 0,
+                "categories": [
+                    {
+                        "ref": "cine",
+                        "name": "Film",
+                        "description": null,
+                        "language": "en"
+                    }
+                ],
+                "occurrences": [
+                    {
+                        "ref": "h0d67a1r",
+                        "all_day": false,
+                        "starts_at": "2026-11-04T20:00",
+                        "finishes_at": null,
+                        "cancelled": false
+                    }
+                ],
+                "venue": {
+                    "ref": "centro-cultural",
+                    "name": "Centro Cultural",
+                    "description": null,
+                    "language": "es"
+                },
+                "location": {
+                    "ref": "motril",
+                    "name": "Motril",
+                    "description": null,
+                    "language": "es",
+                    "region": {
+                        "ref": "granada",
+                        "name": "Granada",
+                        "description": null,
+                        "language": "es"
+                    }
+                }
+            },
+            {
+                "ref": "cria-cuervos",
+                "name": "Cría cuervos",
+                "description": "A screening of Carlos Saura's film of 1976.",
+                "language": "en",
+                "status": "published",
+                "price_from": null,
+                "photo": null,
+                "rating": null,
+                "review_count": 0,
+                "categories": [
+                    {
+                        "ref": "cine",
+                        "name": "Film",
+                        "description": null,
+                        "language": "en"
+                    }
+                ],
+                "occurrences": [
+                    {
+                        "ref": "aujt8lvl",
+                        "all_day": false,
+                        "starts_at": "2026-11-08T20:00",
+                        "finishes_at": null,
+                        "cancelled": false
+                    }
+                ],
+                "venue": {
+                    "ref": "centro-cultural",
+                    "name": "Centro Cultural",
+                    "description": null,
+                    "language": "es"
+                },
+                "location": {
+                    "ref": "motril",
+                    "name": "Motril",
+                    "description": null,
+                    "language": "es",
+                    "region": {
+                        "ref": "granada",
+                        "name": "Granada",
+                        "description": null,
+                        "language": "es"
+                    }
+                }
+            }
+        ],
+        "links": {
+            "first": "http://127.0.0.1:8012/api/events?location=motril&per_page=20&page=1",
+            "last": "http://127.0.0.1:8012/api/events?location=motril&per_page=20&page=1",
+            "prev": null,
+            "next": null
+        },
+        "meta": {
+            "current_page": 1,
+            "from": 1,
+            "last_page": 1,
+            "links": [
+                {
+                    "url": null,
+                    "label": "&laquo; Previous",
+                    "page": null,
+                    "active": false
+                },
+                {
+                    "url": "http://127.0.0.1:8012/api/events?location=motril&per_page=20&page=1",
+                    "label": "1",
+                    "page": 1,
+                    "active": true
+                },
+                {
+                    "url": null,
+                    "label": "Next &raquo;",
+                    "page": null,
+                    "active": false
+                }
+            ],
+            "path": "http://127.0.0.1:8012/api/events",
+            "per_page": 20,
+            "to": 3,
+            "total": 3
+        }
+    }
+}

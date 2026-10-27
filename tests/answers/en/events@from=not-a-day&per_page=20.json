@@ -1,0 +1,13 @@
+{
+    "status": 422,
+    "answer": {
+        "message": "The from field must match the format Y-m-d. (and 2 more errors)",
+        "errors": {
+            "from": [
+                "The from field must match the format Y-m-d.",
+                "The from field must be a date after or equal to 1900-01-01.",
+                "The from field must be a date before or equal to 2200-12-31."
+            ]
+        }
+    }
+}

@@ -10,7 +10,9 @@ use EventsSite\Api\NotThere;
 use EventsSite\Api\Unavailable;
 use EventsSite\Cache\Cache;
 use EventsSite\Pages\About;
+use EventsSite\Pages\Events;
 use EventsSite\Pages\Page;
+use Closure;
 use Twig\Environment;
 
 /**
@@ -24,13 +26,17 @@ final class Site
     /** @var array<string, Page> */
     private array $pages;
 
-    /** @param array<string, Page>|null $pages by the name `Addresses` knows each by; the site's own when null */
+    /**
+     * @param array<string, Page>|null $pages by the name `Addresses` knows each by; the site's own when null
+     * @param Closure(): int|null $now the time as a Unix time, the real one when null
+     */
     public function __construct(
         private readonly Api $api,
         private readonly Cache $cache,
         private readonly Log $log,
         private readonly Environment $twig,
         ?array $pages = null,
+        private readonly ?Closure $now = null,
     ) {
         $this->pages = $pages ?? self::pages();
     }
@@ -40,6 +46,7 @@ final class Site
     {
         return [
             'about' => new About(),
+            'events' => new Events(),
         ];
     }
 
@@ -65,7 +72,7 @@ final class Site
             return $this->notFound($this->languageOf($visit));
         }
 
-        $asking = new Asking($this->api, $this->cache, $this->log, $route->language, $visit->visitor);
+        $asking = new Asking($this->api, $this->cache, $this->log, $route->language, $visit->visitor, $this->now);
 
         try {
             $shown = $this->pages[$route->name]->show($route, $asking);
@@ -80,7 +87,7 @@ final class Site
         return Answer::page(200, $route->language, $route->name, $content, $shown->title, $shown->description, [
             $route->language->value => Addresses::of($route->name, $route->language, $route->ref, $route->filters),
             $route->language->other()->value => Addresses::inOther($route),
-        ]);
+        ], $shown->indexed);
     }
 
     private function notFound(Language $language): Answer

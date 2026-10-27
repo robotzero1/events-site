@@ -10,7 +10,7 @@
   {% if answer.description %}
   <meta name="description" content="{{ answer.description }}">
   {% endif %}
-  {% if answer.status == 404 or answer.status == 503 %}
+  {% if not answer.indexed %}
   <meta name="robots" content="noindex">
   {% endif %}
   {% if answer.alternates is not empty %}

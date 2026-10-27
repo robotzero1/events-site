@@ -7,6 +7,7 @@ namespace EventsSite\Tests\Support;
 use EventsSite\Api\Api;
 use EventsSite\Api\ApiFailed;
 use EventsSite\Api\NotThere;
+use EventsSite\Api\Refused;
 use EventsSite\Language;
 use LogicException;
 
@@ -17,12 +18,38 @@ use LogicException;
  */
 final class SavedApi implements Api
 {
-    /** @var list<array{path: string, language: Language, visitor: string}> */
+    /** @var list<array{path: string, query: array, language: Language, visitor: string}> */
     public array $asked = [];
+
+    /** @var array<string, array<mixed>|\Throwable> */
+    private array $instead = [];
+
+    /**
+     * Have one path answered otherwise, whatever its query: for what the known state cannot show, as a price or a
+     * page beyond the first. The answer should be a saved one changed (`answer()`), so that its shape stays the API's.
+     *
+     * @param array<mixed>|\Throwable $answer
+     */
+    public function instead(string $path, array|\Throwable $answer): self
+    {
+        $this->instead[$path] = $answer;
+
+        return $this;
+    }
+
+    /** A saved answer, to be changed and given `instead()`. */
+    public static function answer(string $path, array $query, Language $language): array
+    {
+        return json_decode((string) file_get_contents(self::fileFor($path, $query, $language)), true, flags: JSON_THROW_ON_ERROR)['answer'];
+    }
 
     public function get(string $path, array $query, Language $language, string $visitor): array
     {
-        $this->asked[] = ['path' => $path, 'language' => $language, 'visitor' => $visitor];
+        $this->asked[] = ['path' => $path, 'query' => $query, 'language' => $language, 'visitor' => $visitor];
+
+        if (isset($this->instead[$path])) {
+            return $this->instead[$path] instanceof \Throwable ? throw $this->instead[$path] : $this->instead[$path];
+        }
 
         $file = self::fileFor($path, $query, $language);
 
@@ -35,6 +62,7 @@ final class SavedApi implements Api
         return match ($saved['status']) {
             200 => $saved['answer'],
             404 => throw new NotThere($path),
+            422, 429 => throw new Refused($saved['status'], $saved['answer']['errors'] ?? [], $saved['answer']['message'] ?? ''),
             default => throw new ApiFailed("{$path} answered {$saved['status']}"),
         };
     }

@@ -1,0 +1,19 @@
+{# One event as a line of a list, from EventLines: when, what and where, and its photo. #}
+<li class="ev{% if line.photo %} with-photo{% endif %}{% if line.cancelled %} cancelled{% endif %}">
+  <p class="ev-when">{{ line.when }}</p>
+  <div class="ev-body">
+    <h3 class="ev-name"><a href="{{ path('event', line.ref) }}"{% if line.lang %} lang="{{ line.lang }}"{% endif %}>{{ line.name }}</a></h3>
+    <p class="ev-where">{{ line.where }}{% if line.until %} · {{ line.until }}{% endif %}{% if line.more %} · {{ line.more }}{% endif %}</p>
+    {% if line.cancelled or line.price or line.categories or line.rating %}
+    <p class="ev-meta">
+      {% if line.cancelled %}<span class="mark">{{ t('line.cancelled') }}</span>{% endif %}
+      {% if line.price %}<span>{{ line.price }}</span>{% endif %}
+      {% if line.categories %}<span>{{ line.categories }}</span>{% endif %}
+      {% if line.rating %}<span class="stars"><span aria-hidden="true">★</span> {{ line.rating }}</span>{% endif %}
+    </p>
+    {% endif %}
+  </div>
+  {% if line.photo %}
+  <img class="ev-photo" src="{{ line.photo.url }}" alt="{{ line.photo.alt }}" loading="lazy" width="120" height="90">
+  {% endif %}
+</li>

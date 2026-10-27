@@ -23,13 +23,14 @@ final class Answer
         public readonly array $alternates = [],
         public readonly ?string $location = null,
         public readonly ?string $page = null,
+        public readonly bool $indexed = true,
     ) {
     }
 
     /** @param array<string, string> $alternates */
-    public static function page(int $status, Language $language, string $page, string $content, string $title, ?string $description, array $alternates): self
+    public static function page(int $status, Language $language, string $page, string $content, string $title, ?string $description, array $alternates, bool $indexed = true): self
     {
-        return new self($status, $language, $content, $title, $description, $alternates, null, $page);
+        return new self($status, $language, $content, $title, $description, $alternates, null, $page, $indexed && $status === 200);
     }
 
     public static function redirect(int $status, Language $language, string $location): self

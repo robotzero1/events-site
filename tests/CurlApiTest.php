@@ -6,6 +6,7 @@ namespace EventsSite\Tests;
 
 use EventsSite\Api\ApiFailed;
 use EventsSite\Api\NotThere;
+use EventsSite\Api\Refused;
 use EventsSite\Language;
 use EventsSite\Standalone\CurlApi;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -81,7 +82,6 @@ final class CurlApiTest extends TestCase
     {
         return [
             'a server error' => ['/broken'],
-            'a refusal' => ['/refused'],
             'an answer that is not JSON' => ['/text'],
         ];
     }
@@ -91,6 +91,28 @@ final class CurlApiTest extends TestCase
     {
         $this->expectException(ApiFailed::class);
         $this->api()->get($path, [], Language::En, '127.0.0.1');
+    }
+
+    public function test_a_refusal_names_the_fields_it_refused(): void
+    {
+        try {
+            $this->api()->get('/refused', [], Language::En, '127.0.0.1');
+            $this->fail('It was not refused.');
+        } catch (Refused $refused) {
+            $this->assertSame(422, $refused->status);
+            $this->assertSame(['from'], array_keys($refused->fields));
+            $this->assertFalse($refused->isTooOften());
+        }
+    }
+
+    public function test_asking_too_often_is_a_refusal_of_its_own(): void
+    {
+        try {
+            $this->api()->get('/too-often', [], Language::En, '127.0.0.1');
+            $this->fail('It was not refused.');
+        } catch (Refused $refused) {
+            $this->assertTrue($refused->isTooOften());
+        }
     }
 
     public function test_an_api_that_is_not_there_is_a_failure(): void

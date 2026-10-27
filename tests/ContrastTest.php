@@ -28,6 +28,8 @@ final class ContrastTest extends TestCase
             'the today mark' => ['today-ink', 'today', 4.5],
             'a rating' => ['star', 'ground', 4.5],
             'a cancelled mark' => ['danger', 'danger-bg', 4.5],
+            'a refusal on the page' => ['danger', 'ground', 4.5],
+            'a refusal on a panel' => ['danger', 'panel', 4.5],
             'an ended mark' => ['ended', 'ended-bg', 4.5],
             'text in a field' => ['ink', 'field', 4.5],
             'a photo still to come' => ['ph-ink', 'panel', 4.5],

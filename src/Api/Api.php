@@ -21,6 +21,7 @@ interface Api
      * @return array<mixed>
      *
      * @throws NotThere when the API says there is no such thing (404)
+     * @throws Refused when it will not, for what the visitor asked (422) or for asking too often (429)
      * @throws ApiFailed when it does not answer, or answers with anything but what was asked for
      */
     public function get(string $path, array $query, Language $language, string $visitor): array;

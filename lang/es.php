@@ -1,6 +1,7 @@
 <?php
 
-// Every word the site itself says, in Spanish. The English is `en.php`, with the same keys. A `%s` is filled in.
+// Every word the site itself says, in Spanish. The English is `en.php`, with the same keys. A `%s` or `%d` is
+// filled in, `%1$s` and the like in that order.
 
 return [
     'site.name' => 'Costa Tropical · Agenda',
@@ -25,4 +26,72 @@ return [
 
     'unavailable.title' => 'Ahora mismo no se pueden mostrar los eventos',
     'unavailable.body' => 'Algo ha fallado de nuestro lado. Vuelve a intentarlo dentro de unos minutos.',
+
+    // Los días y los meses, siendo el lunes el 1.
+    'day.1' => 'lunes', 'day.2' => 'martes', 'day.3' => 'miércoles', 'day.4' => 'jueves',
+    'day.5' => 'viernes', 'day.6' => 'sábado', 'day.7' => 'domingo',
+    'dayShort.1' => 'lun', 'dayShort.2' => 'mar', 'dayShort.3' => 'mié', 'dayShort.4' => 'jue',
+    'dayShort.5' => 'vie', 'dayShort.6' => 'sáb', 'dayShort.7' => 'dom',
+    'month.1' => 'enero', 'month.2' => 'febrero', 'month.3' => 'marzo', 'month.4' => 'abril',
+    'month.5' => 'mayo', 'month.6' => 'junio', 'month.7' => 'julio', 'month.8' => 'agosto',
+    'month.9' => 'septiembre', 'month.10' => 'octubre', 'month.11' => 'noviembre', 'month.12' => 'diciembre',
+    'monthShort.1' => 'ene', 'monthShort.2' => 'feb', 'monthShort.3' => 'mar', 'monthShort.4' => 'abr',
+    'monthShort.5' => 'may', 'monthShort.6' => 'jun', 'monthShort.7' => 'jul', 'monthShort.8' => 'ago',
+    'monthShort.9' => 'sept', 'monthShort.10' => 'oct', 'monthShort.11' => 'nov', 'monthShort.12' => 'dic',
+    // El día de la semana, la fecha, el mes y, si no es de este año, el año.
+    'when.day' => '%1$s %2$d de %3$s',
+    'when.dayYear' => '%1$s %2$d de %3$s de %4$d',
+    'when.short' => '%1$s %2$d %3$s',
+    'when.dayAndTime' => '%1$s, %2$s',
+    'when.allDay' => 'Todo el día',
+    'when.today' => 'Hoy',
+
+    // Una línea de una lista de eventos.
+    'line.until' => 'hasta el %s',
+    'line.moreOne' => 'y 1 fecha más',
+    'line.moreMany' => 'y %d fechas más',
+    'line.price' => 'Desde %s €',
+    'line.ratingOne' => '%s · 1 reseña',
+    'line.ratingMany' => '%1$s · %2$d reseñas',
+    'line.cancelled' => 'Cancelado',
+    'line.inSpanish' => 'En español',
+    'line.inEnglish' => 'En inglés',
+
+    // La agenda.
+    'events.title' => 'Agenda',
+    'events.titleIn' => 'Qué hay en %s',
+    'events.description' => 'Todo lo que viene de Almuñécar a Motril: conciertos, mercados, fiestas, cine y más.',
+    'events.filters' => 'Afinar la lista',
+    'events.words' => 'Palabras',
+    'events.wordsHint' => 'Flamenco, mercadillo, cine…',
+    'events.from' => 'Desde',
+    'events.fromHint' => 'Vacío para hoy',
+    'events.to' => 'Hasta',
+    'events.place' => 'Lugar',
+    'events.anywhere' => 'Cualquier sitio',
+    'events.allOf' => 'Toda la provincia de %s',
+    'events.category' => 'Tipo',
+    'events.anything' => 'Cualquiera',
+    'events.sort' => 'Orden',
+    'events.byRelevance' => 'Lo más parecido primero',
+    'events.byDate' => 'Lo más pronto primero',
+    'events.show' => 'Ver eventos',
+    'events.countOne' => '1 evento',
+    'events.countMany' => '%d eventos',
+    'events.searchedFor' => 'Buscando «%s»',
+    'events.none' => 'No hay nada para lo que has pedido.',
+    'events.noneFound' => 'No se ha encontrado nada para «%s».',
+    'events.widen' => 'Ver todo lo que viene',
+    'events.previous' => 'Página anterior',
+    'events.next' => 'Página siguiente',
+    'events.pageOf' => 'Página %1$d de %2$d',
+    'events.pages' => 'Páginas',
+    'events.tooOften' => 'Has buscado mucho en poco tiempo. Espera un minuto y vuelve a intentarlo.',
+    'events.refused.from' => 'Eso no es un día desde el que buscar.',
+    'events.refused.to' => 'Eso no es un día hasta el que buscar, o es anterior al primero.',
+    'events.refused.place' => 'Ese lugar no está en la lista.',
+    'events.refused.category' => 'Ese tipo de evento no está en la lista.',
+    'events.refused.q' => 'Las palabras que buscar deben tener entre 2 y 200 letras.',
+    'events.refused.sort' => 'La lista no puede ir en ese orden.',
+    'events.refused.page' => 'Esa página no existe.',
 ];

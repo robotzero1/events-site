@@ -31,8 +31,9 @@ final class Standalone
         private readonly string $siteUrl,
         ?array $pages = null,
         ?Assets $assets = null,
+        ?\Closure $now = null,
     ) {
-        $this->site = new Site($api, $cache, $log, $twig, $pages);
+        $this->site = new Site($api, $cache, $log, $twig, $pages, $now);
         $this->assets = $assets ?? Assets::standard();
     }
 

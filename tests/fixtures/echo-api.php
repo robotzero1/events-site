@@ -22,7 +22,11 @@ switch ($path) {
         break;
     case '/api/refused':
         http_response_code(422);
-        echo json_encode(['message' => 'The given data was invalid.']);
+        echo json_encode(['message' => 'The from field must match the format Y-m-d.', 'errors' => ['from' => ['The from field must match the format Y-m-d.']]]);
+        break;
+    case '/api/too-often':
+        http_response_code(429);
+        echo json_encode(['message' => 'Too Many Attempts.']);
         break;
     case '/api/text':
         echo 'Not JSON at all';
