@@ -36,8 +36,11 @@ final class When
     /** A day in full as a heading, its first letter a capital: "Friday 30 October", "Viernes 30 de octubre". */
     public function heading(string $day, ?string $today = null): string
     {
-        $words = $this->day($day, $today);
+        return self::capitalised($this->day($day, $today));
+    }
 
+    private static function capitalised(string $words): string
+    {
         return mb_strtoupper(mb_substr($words, 0, 1)) . mb_substr($words, 1);
     }
 
@@ -75,6 +78,55 @@ final class When
         $day = $this->short(self::dayOf($occurrence['starts_at']));
 
         return $occurrence['all_day'] ? $day : $this->strings->get('when.dayAndTime', $day, self::timeOf($occurrence['starts_at']));
+    }
+
+    /**
+     * An Occurrence in full, as an event's own page lists them, its first letter a capital: "Friday 30 October,
+     * 18:00–21:30", "Jueves 29 de octubre – lunes 2 de noviembre", "Friday 30 October, 22:00 – Saturday 31 October,
+     * 02:00".
+     */
+    public function occurrence(array $occurrence, ?string $today = null): string
+    {
+        return self::capitalised($this->occurrenceWords($occurrence, $today));
+    }
+
+    private function occurrenceWords(array $occurrence, ?string $today): string
+    {
+        $start = self::dayOf($occurrence['starts_at']);
+        $finish = $occurrence['finishes_at'] !== null ? self::dayOf($occurrence['finishes_at']) : null;
+
+        if ($occurrence['all_day']) {
+            return $finish !== null && $finish > $start
+                ? $this->strings->get('when.dayRange', $this->day($start, $today), $this->day($finish, $today))
+                : $this->day($start, $today);
+        }
+
+        $at = $this->strings->get('when.dayAndTime', $this->day($start, $today), self::timeOf($occurrence['starts_at']));
+
+        if ($occurrence['finishes_at'] === null) {
+            return $at;
+        }
+
+        return $finish === $start
+            ? $this->strings->get('when.dayAndTime', $this->day($start, $today), $this->strings->get('when.timeRange', self::timeOf($occurrence['starts_at']), self::timeOf($occurrence['finishes_at'])))
+            : $this->strings->get('when.dayRange', $at, $this->strings->get('when.dayAndTime', $this->day($finish, $today), self::timeOf($occurrence['finishes_at'])));
+    }
+
+    /**
+     * Whether an Occurrence is over at `$now` (`2026-10-30T21:15`, local time), as the API counts it: a timed one
+     * with a finish once that has passed, one with none after its start day, an all-day one after its last day.
+     */
+    public static function isOver(array $occurrence, string $now): bool
+    {
+        $today = self::dayOf($now);
+
+        if ($occurrence['all_day']) {
+            return (self::lastDayOf($occurrence) ?? self::dayOf($occurrence['starts_at'])) < $today;
+        }
+
+        return $occurrence['finishes_at'] !== null
+            ? $occurrence['finishes_at'] <= $now
+            : self::dayOf($occurrence['starts_at']) < $today;
     }
 
     /** The last day of an all-day Occurrence that runs over several, or null. */

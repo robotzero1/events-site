@@ -10,6 +10,7 @@ use EventsSite\Api\NotThere;
 use EventsSite\Api\Unavailable;
 use EventsSite\Cache\Cache;
 use EventsSite\Pages\About;
+use EventsSite\Pages\Event;
 use EventsSite\Pages\Events;
 use EventsSite\Pages\Page;
 use Closure;
@@ -47,6 +48,7 @@ final class Site
         return [
             'about' => new About(),
             'events' => new Events(),
+            'event' => new Event(),
         ];
     }
 

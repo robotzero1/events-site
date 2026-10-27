@@ -11,8 +11,8 @@ use EventsSite\Tests\Support\SavedApi;
 use PHPUnit\Framework\TestCase;
 
 /**
- * The listing and Search, against the known state: a book fair on today (27 October when the answers were captured,
- * a Tuesday) to the 29th with one Review, and two films at the Centro Cultural in Motril next week.
+ * The listing and Search, against the known state: a book fair on from today to two days on, with one Review, and
+ * two films at the Centro Cultural in Motril, eight and twelve days on.
  */
 final class EventsPageTest extends TestCase
 {
@@ -46,7 +46,7 @@ final class EventsPageTest extends TestCase
         $this->assertSame(200, $response->status);
         $this->assertSame("What's on", $this->text($page, '//main//h1'));
         $this->assertSame('3 events', $this->text($page, '//p[@class="count"]'));
-        $this->assertSame(['Tuesday 27 October Today', 'Wednesday 4 November', 'Sunday 8 November'], $this->texts($page, '//section[@class="day"]/h2'));
+        $this->assertSame([self::written(0) . ' Today', self::written(8), self::written(12)], $this->texts($page, '//section[@class="day"]/h2'));
         $this->assertSame(['Book fair', 'The Spirit of the Beehive', 'Cría cuervos'], $this->texts($page, '//li[contains(@class, "ev")]//h3'));
         $this->assertSame('/en/event/book-fair', $this->attribute($page, '//h3/a[text()="Book fair"]/@href'));
         $this->assertSame(0, $page->query('//meta[@name="robots"]')->length);
@@ -57,7 +57,7 @@ final class EventsPageTest extends TestCase
         $page = $this->page($this->visit('/en/events'));
 
         $this->assertSame('All day', $this->text($page, '//li[contains(@class, "ev")]//p[@class="ev-when"]'));
-        $this->assertSame('Motril · until Thursday 29 October', $this->text($page, '//li[contains(@class, "ev")]//p[@class="ev-where"]'));
+        $this->assertSame('Motril · until ' . self::written(2, 'day'), $this->text($page, '//li[contains(@class, "ev")]//p[@class="ev-where"]'));
         $this->assertSame('Markets ★ 4 · 1 review', $this->text($page, '//li[contains(@class, "ev")]//p[@class="ev-meta"]'));
         $this->assertSame('20:00', $this->text($page, '//li[contains(@class, "ev")]//p[@class="ev-when"]', 1));
         $this->assertSame('Centro Cultural, Motril', $this->text($page, '//li[contains(@class, "ev")]//p[@class="ev-where"]', 1));
@@ -69,9 +69,9 @@ final class EventsPageTest extends TestCase
 
         $this->assertSame('Agenda', $this->text($page, '//main//h1'));
         $this->assertSame('3 eventos', $this->text($page, '//p[@class="count"]'));
-        $this->assertSame(['Martes 27 de octubre Hoy', 'Miércoles 4 de noviembre', 'Domingo 8 de noviembre'], $this->texts($page, '//section[@class="day"]/h2'));
+        $this->assertSame([self::written(0, language: Language::Es) . ' Hoy', self::written(8, language: Language::Es), self::written(12, language: Language::Es)], $this->texts($page, '//section[@class="day"]/h2'));
         $this->assertSame('Todo el día', $this->text($page, '//p[@class="ev-when"]'));
-        $this->assertSame('Motril · hasta el jueves 29 de octubre', $this->text($page, '//p[@class="ev-where"]'));
+        $this->assertSame('Motril · hasta el ' . self::written(2, 'day', Language::Es), $this->text($page, '//p[@class="ev-where"]'));
         $this->assertSame('Mercados ★ 4 · 1 reseña', $this->text($page, '//p[@class="ev-meta"]'));
         $this->assertSame('/es/evento/book-fair', $this->attribute($page, '//h3/a[text()="Feria del libro"]/@href'));
     }
@@ -146,7 +146,7 @@ final class EventsPageTest extends TestCase
         $this->assertSame('1 event · Found by “market”', $this->text($page, '//p[@class="count"]'));
         // Not grouped by day: each line has its own.
         $this->assertSame(0, $page->query('//section[@class="day"]')->length);
-        $this->assertSame('Tue 27 Oct', $this->text($page, '//p[@class="ev-when"]'));
+        $this->assertSame(self::written(0, 'short'), $this->text($page, '//p[@class="ev-when"]'));
         $this->assertSame('relevance', $this->attribute($page, '//select[@id="f-sort"]//option[@selected]/@value'));
         $this->assertSame('noindex', $this->attribute($page, '//meta[@name="robots"]/@content'));
     }
@@ -156,7 +156,7 @@ final class EventsPageTest extends TestCase
         $page = $this->page($this->visit('/en/events', ['q' => 'market', 'sort' => 'date']));
 
         $this->assertSame(['q' => 'market', 'sort' => 'date', 'per_page' => 20], $this->asked('/events'));
-        $this->assertSame(['Tuesday 27 October Today'], $this->texts($page, '//section[@class="day"]/h2'));
+        $this->assertSame([self::written(0) . ' Today'], $this->texts($page, '//section[@class="day"]/h2'));
     }
 
     public function test_a_search_is_asked_afresh_every_time(): void
@@ -225,7 +225,7 @@ final class EventsPageTest extends TestCase
 
         $this->assertSame('ev with-photo cancelled', $this->attribute($page, '//li[contains(@class, "ev")]/@class'));
         $this->assertSame('Cancelled From 4.50 € Markets ★ 4 · 1 review', $this->text($page, '//p[@class="ev-meta"]'));
-        $this->assertSame('Motril · until Thursday 29 October · and 2 more dates', $this->text($page, '//p[@class="ev-where"]'));
+        $this->assertSame('Motril · until ' . self::written(2, 'day') . ' · and 2 more dates', $this->text($page, '//p[@class="ev-where"]'));
         $this->assertSame('https://events.example/storage/photos/fair.jpg', $this->attribute($page, '//img[@class="ev-photo"]/@src'));
         $this->assertSame('Stalls in the square', $this->attribute($page, '//img[@class="ev-photo"]/@alt'));
     }
@@ -265,12 +265,12 @@ final class EventsPageTest extends TestCase
 
     public function test_an_event_already_on_when_the_list_starts_is_under_its_first_day(): void
     {
-        // The book fair began on the 27th; looked for from the 28th it is on that day.
+        // The book fair began today; looked for from tomorrow it is on that day.
         $this->listing([self::line()]);
 
-        $page = $this->page($this->visit('/en/events', ['from' => '2026-10-28']));
+        $page = $this->page($this->visit('/en/events', ['from' => self::inDays(1)]));
 
-        $this->assertSame(['Wednesday 28 October'], $this->texts($page, '//section[@class="day"]/h2'));
+        $this->assertSame([self::written(1)], $this->texts($page, '//section[@class="day"]/h2'));
     }
 
     public function test_pages_beyond_the_first(): void

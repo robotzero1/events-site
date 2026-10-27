@@ -51,7 +51,13 @@ final class Asking
     /** Today in Spain, `2026-10-30`, by the same clock that times what is kept. */
     public function today(): string
     {
-        return (new \DateTimeImmutable('@' . ($this->now)()))->setTimezone(new \DateTimeZone(self::TIME_ZONE))->format('Y-m-d');
+        return substr($this->now(), 0, 10);
+    }
+
+    /** The time now in Spain, written as the API writes an Occurrence's: `2026-10-30T21:15`. */
+    public function now(): string
+    {
+        return (new \DateTimeImmutable('@' . ($this->now)()))->setTimezone(new \DateTimeZone(self::TIME_ZONE))->format('Y-m-d\TH:i');
     }
 
     /**

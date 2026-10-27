@@ -134,10 +134,20 @@
 .events-site .crumbs { margin-top: 16px; font-size: 0.95rem; }
 .events-site .event-head h1 { margin-top: 8px; font-family: var(--display); font-size: 2.1rem; font-weight: 600; line-height: 1.1; }
 .events-site .status { margin-top: 10px; font-weight: 700; color: var(--accent); }
+.events-site .coming { margin-top: 8px; }
 .events-site .gallery { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-top: 20px; }
 .events-site .gallery img, .events-site .gallery .ph { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
-.events-site .gallery > :first-child { grid-row: span 2; aspect-ratio: auto; height: 100%; min-height: 240px; }
-.events-site .gallery figcaption { grid-column: 1 / -1; font-size: 0.9rem; color: var(--muted); }
+.events-site .gallery > figure:first-child { grid-row: span 2; }
+.events-site .gallery > figure:only-child { grid-column: 1 / -1; }
+.events-site .gallery > figure:first-child img { aspect-ratio: auto; height: 100%; min-height: 240px; max-height: 70vh; }
+.events-site .gallery figcaption { margin-top: 4px; font-size: 0.9rem; color: var(--muted); }
+.events-site .in-other, .events-site .quiet { font-size: 0.95rem; color: var(--muted); }
+.events-site .in-other { margin-bottom: 12px; }
+.events-site .more { margin-top: 16px; }
+.events-site .review h4 { font-size: 1rem; }
+.events-site .earlier .year { margin-top: 16px; font-family: var(--display); font-size: 1.2rem; font-weight: 600; }
+.events-site .review-photos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.events-site .review-photos img { width: 96px; aspect-ratio: 1; object-fit: cover; border-radius: 2px; }
 .events-site .event-grid { display: grid; gap: 28px; margin-top: 24px; }
 .events-site .description p + p { margin-top: 1em; }
 .events-site .facts { display: grid; gap: 18px; align-self: start; padding: 20px; border-top: 3px solid var(--accent); border-radius: var(--radius); background: var(--panel); }
@@ -165,6 +175,8 @@
   .events-site .ev-photo { width: 120px; aspect-ratio: 4 / 3; }
   .events-site .ev-name { font-size: 1.35rem; }
   .events-site .event-grid { grid-template-columns: minmax(0, 1fr) 340px; gap: 48px; }
+  .events-site .event-grid > .facts { grid-column: 2; grid-row: 1; }
+  .events-site .event-grid > .event-main { grid-column: 1; grid-row: 1; }
   .events-site .listing-grid { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 40px; align-items: start; }
   .events-site .listing-grid .filters .two { grid-template-columns: 1fr; }
 }

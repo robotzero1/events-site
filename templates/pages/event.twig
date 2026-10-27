@@ -1,0 +1,149 @@
+{# An event in full: what it is, every time, where, and what people thought. Everything it says is text. #}
+<p class="crumbs"><a href="{{ path('events') }}">{{ t('events.title') }}</a> › <a href="{{ path('location', event.location.ref) }}">{{ event.location.name }}</a></p>
+
+<div class="event-head"{% if lang %} lang="{{ lang }}"{% endif %}>
+  <h1>{{ event.name }}</h1>
+</div>
+
+{% if cancelled %}
+<p class="status"><span class="mark">{{ t('event.cancelled') }}</span></p>
+{% elseif ended %}
+<p class="status"><span class="mark ended">{{ t('event.ended') }}</span></p>
+{% endif %}
+{% if cancelled or ended %}
+<p class="coming">
+  {% if venue %}<a href="{{ path('venue', venue.ref) }}">{{ t('event.comingAt', venue.name) }}</a>
+  {% else %}<a href="{{ path('location', event.location.ref) }}">{{ t('event.comingIn', event.location.name) }}</a>{% endif %}
+</p>
+{% endif %}
+
+{% if photos is not empty %}
+<div class="gallery">
+  {% for photo in photos %}
+  <figure>
+    <img src="{{ photo.url }}" alt="{{ photo.alt }}"{% if not loop.first %} loading="lazy"{% endif %}>
+    {% if photo.caption %}<figcaption>{{ photo.caption }}</figcaption>{% endif %}
+  </figure>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="event-grid">
+  {# First, so that on a phone when and where come before everything else; a wide screen puts it beside. #}
+  <aside class="facts" aria-label="{{ t('event.facts') }}">
+    <dl>
+      <dt>{{ t('event.when') }}</dt>
+      <dd>
+        <ul class="times">
+          {% for time in times %}
+          <li{% if time.cancelled %} class="cancelled"{% endif %}><span class="t">{{ time.words }}</span>{% if time.cancelled %} <span class="mark">{{ t('line.cancelled') }}</span>{% endif %}</li>
+          {% endfor %}
+        </ul>
+      </dd>
+    </dl>
+    <dl>
+      <dt>{{ t('event.where') }}</dt>
+      <dd>
+        {% if venue %}<a href="{{ path('venue', venue.ref) }}">{{ venue.name }}</a><br>{% endif %}
+        {% if venue and venue.address %}{{ venue.address }}<br>{% endif %}
+        <a href="{{ path('location', event.location.ref) }}">{{ event.location.name }}</a> ({{ event.location.region.name }})
+        {% if venue and venue.map %}<br><a href="{{ venue.map }}" rel="noopener noreferrer">{{ t('event.map') }}</a>{% endif %}
+      </dd>
+    </dl>
+    {% if price %}
+    <dl>
+      <dt>{{ t('event.price') }}</dt>
+      <dd>{{ price }}</dd>
+    </dl>
+    {% endif %}
+    {% if event.categories is not empty %}
+    <dl>
+      <dt>{{ t('event.categories') }}</dt>
+      <dd>{% for category in event.categories %}<a href="{{ path('category', category.ref) }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</dd>
+    </dl>
+    {% endif %}
+    {% if event.tags is not empty %}
+    <dl>
+      <dt>{{ t('event.tags') }}</dt>
+      <dd><ul class="taglist">{% for tag in event.tags %}<li>{{ tag }}</li>{% endfor %}</ul></dd>
+    </dl>
+    {% endif %}
+    {% if event.organiser %}
+    <dl>
+      <dt>{{ t('event.organiser') }}</dt>
+      <dd>{{ event.organiser.name }}</dd>
+    </dl>
+    {% endif %}
+  </aside>
+  <div class="event-main">
+    {% if lang %}<p class="in-other">{{ t('event.inOther') }}</p>{% endif %}
+    {% if paragraphs is not empty %}
+    <div class="description"{% if lang %} lang="{{ lang }}"{% endif %}>
+      {% for paragraph in paragraphs %}<p>{{ paragraph|nl2br }}</p>{% endfor %}
+    </div>
+    {% endif %}
+    {% if event.source_url %}
+    <p class="more"><a href="{{ event.source_url }}" rel="noopener noreferrer">{{ t('event.more') }}</a></p>
+    {% endif %}
+
+    <section class="reviews" aria-labelledby="reviews">
+      <h2 class="section-title" id="reviews">{{ t('event.reviews') }}</h2>
+      {% if rating %}
+      <p class="average"><strong>{{ rating.value }}</strong> <span class="stars"><span aria-hidden="true">★</span> {{ rating.from }}</span></p>
+      {% endif %}
+      {% if reviews is empty %}
+      <p class="quiet">{{ t('event.noReviews') }}</p>
+      {% else %}
+      <ol>
+        {% for review in reviews %}
+        <li class="review">
+          <h3>{{ review.title }}</h3>
+          <p class="byline"><span class="stars">{{ review.rating }}</span> · {{ review.by }}</p>
+          <p class="words">{{ review.words }}</p>
+          {% if review.photos is not empty %}
+          <ul class="review-photos">
+            {% for photo in review.photos %}<li><img src="{{ photo.url }}" alt="{{ photo.alt }}" loading="lazy"></li>{% endfor %}
+          </ul>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+      {% if more_reviews %}<p class="quiet">{{ more_reviews }}</p>{% endif %}
+      {% endif %}
+    </section>
+
+    {% if comments is not empty %}
+    <section class="comments" aria-labelledby="comments">
+      <h2 class="section-title" id="comments">{{ t('event.comments') }}</h2>
+      <ol>
+        {% for comment in comments %}
+        <li class="comment">
+          <p class="byline">{{ comment.by }}</p>
+          <p class="words">{{ comment.words }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+      {% if more_comments %}<p class="quiet">{{ more_comments }}</p>{% endif %}
+    </section>
+    {% endif %}
+
+    {% if earlier is not empty %}
+    <section class="earlier" aria-labelledby="earlier">
+      <h2 class="section-title" id="earlier">{{ t('event.earlier') }}</h2>
+      {% for edition in earlier %}
+      <h3 class="year">{{ edition.year }}</h3>
+      <ol>
+        {% for review in edition.reviews %}
+        <li class="review">
+          <h4>{{ review.title }}</h4>
+          <p class="byline"><span class="stars">{{ review.rating }}</span> · {{ review.by }}</p>
+          <p class="words">{{ review.words }}</p>
+        </li>
+        {% endfor %}
+      </ol>
+      {% endfor %}
+    </section>
+    {% endif %}
+  </div>
+
+</div>

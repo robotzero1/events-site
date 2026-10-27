@@ -1,0 +1,56 @@
+{
+    "status": 200,
+    "answer": {
+        "data": {
+            "ref": "el-espiritu-de-la-colmena",
+            "name": "The Spirit of the Beehive",
+            "description": "A screening of Víctor Erice's film of 1973.",
+            "language": "en",
+            "status": "published",
+            "venue": {
+                "ref": "centro-cultural",
+                "name": "Centro Cultural",
+                "description": null,
+                "language": "es",
+                "status": "published"
+            },
+            "location": {
+                "ref": "motril",
+                "name": "Motril",
+                "description": null,
+                "language": "es",
+                "region": {
+                    "ref": "granada",
+                    "name": "Granada",
+                    "description": null,
+                    "language": "es"
+                }
+            },
+            "price_from": null,
+            "categories": [
+                {
+                    "ref": "cine",
+                    "name": "Film",
+                    "description": null,
+                    "language": "en"
+                }
+            ],
+            "tags": [],
+            "photos": [],
+            "rating": null,
+            "review_count": 0,
+            "occurrences": [
+                {
+                    "ref": "hkfhr49h",
+                    "all_day": false,
+                    "starts_at": "2026-11-04T20:00",
+                    "finishes_at": null,
+                    "cancelled": false
+                }
+            ],
+            "organiser": null,
+            "source_url": "https://cineclub.example/Pelicula/el-espiritu-de-la-colmena/",
+            "earlier_editions": []
+        }
+    }
+}

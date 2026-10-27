@@ -6,7 +6,9 @@ namespace EventsSite\Tests\Support;
 
 use DOMDocument;
 use DOMXPath;
+use EventsSite\Language;
 use EventsSite\Standalone\Response;
+use EventsSite\When;
 use EventsSite\Standalone\Standalone;
 use EventsSite\Visit;
 
@@ -19,6 +21,12 @@ trait Browsing
     protected SavedApi $api;
     protected ArrayCache $cache;
     protected MemoryLog $log;
+
+    /** The day the visit is made, `2026-10-30`: the day the answers were captured unless a test says otherwise. */
+    protected ?string $day = null;
+
+    /** The time of day it is made, local time. */
+    protected string $time = '12:00';
 
     protected function setUpBrowsing(): void
     {
@@ -33,10 +41,25 @@ trait Browsing
         return trim((string) file_get_contents(dirname(__DIR__) . '/answers/today.txt'));
     }
 
+    /** The day `$days` after the capture, `2026-10-29`: the known state's days are counted from it. */
+    protected static function inDays(int $days): string
+    {
+        return (new \DateTimeImmutable(self::captured()))->modify("+{$days} days")->format('Y-m-d');
+    }
+
+    /**
+     * That day in words, as the page writes it (`heading`, `day` or `short`), for a test whose expectation would
+     * otherwise hold only on the day the answers were captured. `When` is tested on fixed days by `WhenTest`.
+     */
+    protected static function written(int $days, string $how = 'heading', Language $language = Language::En): string
+    {
+        return (new When($language))->{$how}(self::inDays($days), self::captured());
+    }
+
     protected function visit(string $path, array $query = [], ?string $acceptLanguage = null): Response
     {
-        $noon = (new \DateTimeImmutable(self::captured() . ' 12:00', new \DateTimeZone('Europe/Madrid')))->getTimestamp();
-        $site = new Standalone($this->api, $this->cache, $this->log, Standalone::templates(), 'https://events.example', now: fn () => $noon);
+        $now = (new \DateTimeImmutable(($this->day ?? self::captured()) . ' ' . $this->time, new \DateTimeZone('Europe/Madrid')))->getTimestamp();
+        $site = new Standalone($this->api, $this->cache, $this->log, Standalone::templates(), 'https://events.example', now: fn () => $now);
 
         return $site->respond(new Visit($path, $query, $acceptLanguage, '203.0.113.7'));
     }

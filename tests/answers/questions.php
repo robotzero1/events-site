@@ -25,6 +25,17 @@ return [
     // What the listing refuses.
     ['/events', ['from' => 'not-a-day', 'per_page' => 20], 'en'],
     ['/events', ['location' => 'nowhere', 'per_page' => 20], 'en'],
+    // An event's page: the book fair, on today with a Review and a Comment, and a film at a Venue.
+    ['/events/book-fair', [], 'en'],
+    ['/events/book-fair', [], 'es'],
+    ['/events/book-fair/reviews', [], 'en'],
+    ['/events/book-fair/reviews', [], 'es'],
+    ['/events/book-fair/comments', [], 'en'],
+    ['/events/book-fair/comments', [], 'es'],
+    ['/events/el-espiritu-de-la-colmena', [], 'en'],
+    ['/events/el-espiritu-de-la-colmena/reviews', [], 'en'],
+    ['/events/el-espiritu-de-la-colmena/comments', [], 'en'],
+    ['/venues/centro-cultural', [], 'en'],
     // The API's own "not found", which a page turns into its own.
     ['/events/no-such-event', [], 'en'],
 ];

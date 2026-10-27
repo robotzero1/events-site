@@ -79,12 +79,12 @@ final class EventLines
                 $others > 1 => $this->strings->get('line.moreMany', $others),
                 default => null,
             },
-            'price' => $event['price_from'] !== null ? $this->strings->get('line.price', $this->number((float) $event['price_from'], 2)) : null,
+            'price' => $event['price_from'] !== null ? $this->strings->get('line.price', Numbers::price((float) $event['price_from'], $this->language)) : null,
             'categories' => implode(', ', array_map(fn (array $category) => $category['name'], $event['categories'])),
             'rating' => $event['review_count'] > 0 && $event['rating'] !== null
                 ? ($event['review_count'] === 1
-                    ? $this->strings->get('line.ratingOne', $this->number((float) $event['rating'], 1))
-                    : $this->strings->get('line.ratingMany', $this->number((float) $event['rating'], 1), $event['review_count']))
+                    ? $this->strings->get('line.ratingOne', Numbers::rating((float) $event['rating'], $this->language))
+                    : $this->strings->get('line.ratingMany', Numbers::rating((float) $event['rating'], $this->language), $event['review_count']))
                 : null,
             'cancelled' => $event['status'] === 'cancelled' || $first['cancelled'],
             'photo' => $event['photo'] !== null ? ['url' => $event['photo']['url'], 'alt' => (string) ($event['photo']['name'] ?? '')] : null,
@@ -97,15 +97,5 @@ final class EventLines
         $venue = $event['venue']['name'] ?? null;
 
         return $venue !== null ? "{$venue}, {$location}" : $location;
-    }
-
-    /** A number as the language writes it, `4.50` or `4,50`, with no decimals when it is whole. */
-    private function number(float $number, int $places): string
-    {
-        $decimals = fmod($number, 1.0) === 0.0 ? 0 : $places;
-
-        return $this->language === Language::Es
-            ? number_format($number, $decimals, ',', '.')
-            : number_format($number, $decimals, '.', ',');
     }
 }

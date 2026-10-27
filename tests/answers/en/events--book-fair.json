@@ -1,0 +1,50 @@
+{
+    "status": 200,
+    "answer": {
+        "data": {
+            "ref": "book-fair",
+            "name": "Book fair",
+            "description": "New and second-hand books under the arcades, with readings in the evening.",
+            "language": "en",
+            "status": "published",
+            "venue": null,
+            "location": {
+                "ref": "motril",
+                "name": "Motril",
+                "description": null,
+                "language": "es",
+                "region": {
+                    "ref": "granada",
+                    "name": "Granada",
+                    "description": null,
+                    "language": "es"
+                }
+            },
+            "price_from": null,
+            "categories": [
+                {
+                    "ref": "mercados",
+                    "name": "Markets",
+                    "description": null,
+                    "language": "en"
+                }
+            ],
+            "tags": [],
+            "photos": [],
+            "rating": 4,
+            "review_count": 1,
+            "occurrences": [
+                {
+                    "ref": "5dhtgx6b",
+                    "all_day": true,
+                    "starts_at": "2026-10-27",
+                    "finishes_at": "2026-10-29",
+                    "cancelled": false
+                }
+            ],
+            "organiser": null,
+            "source_url": null,
+            "earlier_editions": []
+        }
+    }
+}
