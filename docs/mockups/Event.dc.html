@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Event</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Source+Serif+4:opsz,wght@8..60,400..700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="events-site {{dirClass}}">
+<header class="site-head">
+<div class="wrap">
+<a class="brand" href="#">Costa Tropical · What's on</a>
+<nav class="nav" aria-label="Main">
+<a href="#">All events</a>
+<a href="#">Suggest an event</a>
+</nav>
+<p class="lang"><a href="#" lang="es" hreflang="es">Español</a></p>
+</div>
+</header>
+
+<main class="wrap">
+<p class="crumbs"><a href="#">What's on</a> › <a href="#">Motril</a></p>
+
+<div class="event-head">
+<h1>Motril Book Fair</h1>
+<p class="status">On now · until Monday 2 November</p>
+</div>
+
+<figure class="gallery">
+<div class="ph ph-1" role="img" aria-label="Stalls under the arcades of the Plaza de España">Photo</div>
+<div class="ph ph-3" role="img" aria-label="A reading for children">Photo</div>
+<div class="ph ph-5" role="img" aria-label="Second-hand books on a table">Photo</div>
+<figcaption>Stalls under the arcades of the Plaza de España.</figcaption>
+</figure>
+
+<div class="event-grid">
+<div class="event-main">
+<div class="description">
+<p>Twenty bookshops and publishers from the province fill the arcades of the Plaza de España for five days, with new books, second-hand stalls and a corner for children.</p>
+<p>There are readings by local writers each evening and a storytelling hour for children on Saturday morning. Bring a bag: most stalls take cards, a few only cash.</p>
+</div>
+<p class="more"><a href="#">More information on the town hall's website</a></p>
+
+<h2 class="section-title">Reviews</h2>
+<p class="average"><strong>4.5</strong> <span class="stars"><span aria-hidden="true">★★★★★</span> from 2 reviews</span></p>
+<ol>
+<li class="review">
+<h3>A lovely morning</h3>
+<p class="byline"><span class="stars">5 of 5</span> · Lucía M. · 30 October 2026</p>
+<p class="words">Went with the kids for the storytelling. Lots of local publishers I'd never heard of, and the second-hand stall had a first edition I'd been hunting for.</p>
+</li>
+<li class="review">
+<h3>Good, but smaller than last year</h3>
+<p class="byline"><span class="stars">4 of 5</span> · Tom H. · 30 October 2026</p>
+<p class="words">Fewer stalls than in 2025, but the readings in the evening were worth staying for.</p>
+</li>
+</ol>
+
+<h2 class="section-title">Comments</h2>
+<ol>
+<li class="comment">
+<p class="byline">Teo B. · 28 October 2026</p>
+<p class="words">Is there anywhere to park near the plaza?</p>
+</li>
+</ol>
+
+<h2 class="section-title">Earlier years</h2>
+<section class="earlier">
+<h3>2025 · <span class="stars">4.3 from 3 reviews</span></h3>
+<ol>
+<li class="review">
+<p class="byline"><span class="stars">5 of 5</span> · Ana R.</p>
+<p class="words">Best book fair on the coast.</p>
+</li>
+</ol>
+</section>
+</div>
+
+<aside class="facts" aria-label="When and where">
+<dl>
+<dt>When</dt>
+<dd>
+<ul class="times">
+<li><span class="t">Thursday 29 October, 18:00–21:30</span></li>
+<li><span class="t">Friday 30 October, 10:00–21:30</span></li>
+<li><span class="t">Saturday 31 October, 10:00–21:30</span></li>
+<li class="cancelled"><span class="t">Sunday 1 November, 10:00–14:00</span> <span class="mark">Cancelled</span></li>
+<li><span class="t">Monday 2 November, 10:00–21:30</span></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>Where</dt>
+<dd>
+<a href="#">Plaza de España</a><br>
+Plaza de España, s/n<br>
+Motril (Granada)<br>
+<a href="#">See it on a map</a>
+</dd>
+</dl>
+<dl>
+<dt>Price</dt>
+<dd>Free</dd>
+</dl>
+<dl>
+<dt>Kind</dt>
+<dd><a href="#">Books</a>, <a href="#">Family</a></dd>
+</dl>
+<dl>
+<dt>Tags</dt>
+<dd>
+<ul class="taglist">
+<li>libros</li>
+<li>lectura</li>
+<li>feria</li>
+</ul>
+</dd>
+</dl>
+</aside>
+</div>
+</main>
+
+<footer class="site-foot">
+<div class="wrap">
+<a href="#">About this site</a>
+<a href="#">Suggest an event</a>
+<span>Events are checked by people before they appear.</span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dir":{"editor":"enum","options":["a","b"],"default":"a"},"$preview":{"width":1280,"height":2100}}'>
+class Component extends DCLogic {
+renderVals() {
+return { dirClass: 'dir-' + (this.props.dir ?? 'a') };
+}
+}
+</script>
+</body>
+</html>

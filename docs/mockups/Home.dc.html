@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Source+Serif+4:opsz,wght@8..60,400..700&amp;display=swap">
+<style>body{margin:0}</style>
+</helmet>
+<div class="events-site {{dirClass}}">
+<header class="site-head">
+<div class="wrap">
+<a class="brand" href="#">Costa Tropical · What's on</a>
+<nav class="nav" aria-label="Main">
+<a href="#">All events</a>
+<a href="#">Suggest an event</a>
+</nav>
+<p class="lang"><a href="#" lang="es" hreflang="es">Español</a></p>
+</div>
+</header>
+
+<main>
+<section class="hero">
+<div class="wrap">
+<h1>What's on along the coast</h1>
+<p class="lead">Concerts, markets, fiestas and films from Almuñécar to Motril.</p>
+<form class="search" role="search">
+<label class="hidden" for="home-q">Search events</label>
+<input id="home-q" type="search" name="q" placeholder="Flamenco, market, cinema…">
+<button type="submit">Search</button>
+</form>
+<p class="chips">
+<a href="#">Today</a>
+<a href="#">This weekend</a>
+<a href="#">Next 7 days</a>
+</p>
+</div>
+</section>
+
+<div class="wrap">
+<section class="day">
+<h2>Friday 30 October <span class="today">Today</span></h2>
+<ol class="events">
+<li class="ev">
+<div class="ev-photo ph ph-2" role="img" aria-label="Photo of the film">Photo</div>
+<p class="ev-when">20:30</p>
+<div class="ev-body">
+<h3 class="ev-name"><a href="#">Film club: Past Lives</a></h3>
+<p class="ev-where">Centro Cultural Caja Granada, Motril</p>
+<p class="ev-meta"><span>From 4 €</span><span>Cinema</span></p>
+</div>
+</li>
+<li class="ev no-photo">
+<p class="ev-when">22:00</p>
+<div class="ev-body">
+<h3 class="ev-name"><a href="#">Flamenco night at the Peña</a></h3>
+<p class="ev-where">Peña Flamenca, Salobreña</p>
+<p class="ev-meta"><span>From 8 €</span><span>Flamenco</span></p>
+</div>
+</li>
+<li class="ev">
+<div class="ev-photo ph ph-1" role="img" aria-label="Photo of the book fair">Photo</div>
+<p class="ev-when">All day</p>
+<div class="ev-body">
+<h3 class="ev-name"><a href="#">Motril Book Fair</a></h3>
+<p class="ev-where">Plaza de España, Motril</p>
+<p class="ev-meta"><span>Free</span><span class="stars"><span aria-hidden="true">★</span> 4.5 · 2 reviews</span></p>
+</div>
+</li>
+</ol>
+</section>
+
+<section class="day">
+<h2>Saturday 31 October</h2>
+<ol class="events">
+<li class="ev">
+<div class="ev-photo ph ph-3" role="img" aria-label="Photo of the market">Photo</div>
+<p class="ev-when">All day</p>
+<div class="ev-body">
+<h3 class="ev-name"><a href="#">Craft market on the promenade</a></h3>
+<p class="ev-where">Paseo del Altillo, Almuñécar</p>
+<p class="ev-meta"><span>Free</span><span>Markets</span></p>
+</div>
+</li>
+<li class="ev cancelled">
+<div class="ev-photo ph ph-4" role="img" aria-label="Photo of the workshop">Photo</div>
+<p class="ev-when">11:00</p>
+<div class="ev-body">
+<h3 class="ev-name"><a href="#">Children's pottery workshop</a></h3>
+<p class="ev-where">Casa de la Cultura, Salobreña</p>
+<p class="ev-meta"><span class="mark">Cancelled</span></p>
+</div>
+</li>
+<li class="ev">
+<div class="ev-photo ph ph-5" role="img" aria-label="Photo of the trio">Photo</div>
+<p class="ev-when">21:00</p>
+<div class="ev-body">
+<h3 class="ev-name"><a href="#">Jazz trio at the Calderón</a></h3>
+<p class="ev-where">Teatro Calderón, Motril</p>
+<p class="ev-meta"><span>From 12 €</span><span>Concerts</span></p>
+</div>
+</li>
+</ol>
+</section>
+
+<section class="day">
+<h2>Sunday 1 November</h2>
+<ol class="events">
+<li class="ev">
+<div class="ev-photo ph ph-6" role="img" aria-label="Photo of the castle">Photo</div>
+<p class="ev-when">11:00</p>
+<div class="ev-body">
+<h3 class="ev-name"><a href="#">Guided tour of San Miguel castle</a></h3>
+<p class="ev-where">Castillo de San Miguel, Almuñécar</p>
+<p class="ev-meta"><span>From 5 €</span><span class="stars"><span aria-hidden="true">★</span> 4.8 · 6 reviews</span></p>
+</div>
+</li>
+</ol>
+</section>
+
+<p class="pager"><a class="button" href="#">See every day</a></p>
+</div>
+</main>
+
+<footer class="site-foot">
+<div class="wrap">
+<a href="#">About this site</a>
+<a href="#">Suggest an event</a>
+<span>Events are checked by people before they appear.</span>
+</div>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"dir":{"editor":"enum","options":["a","b"],"default":"a"},"$preview":{"width":1280,"height":1500}}'>
+class Component extends DCLogic {
+renderVals() {
+return { dirClass: 'dir-' + (this.props.dir ?? 'a') };
+}
+}
+</script>
+</body>
+</html>
