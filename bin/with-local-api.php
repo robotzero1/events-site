@@ -23,7 +23,7 @@ $environment = array_replace($environment, [
     'CACHE_STORE' => 'array',
     'MAIL_MAILER' => 'array',
     'READER_ASKS_NOBODY' => 'true',
-    // No key for any outside service. Not '': on Windows a variable cannot be empty, so it would be dropped and the
+    // No key for any outside service. Not '': on Windows proc_open drops a variable that is empty, and the
     // key in the API's .env used. Laravel reads 'null' as none.
     'VOYAGE_API_KEY' => 'null',
     'OPENAI_API_KEY' => 'null',
