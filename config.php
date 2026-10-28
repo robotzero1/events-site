@@ -15,6 +15,9 @@ $config = [
     // What signs what the site must know it gave out itself, as when a form was shown. Empty: one is made at random
     // and kept in `var/secret`.
     'secret' => getenv('EVENTS_SITE_SECRET') ?: '',
+    // Whether search engines may read the site. False turns them all away in `robots.txt`, for a site not yet ready
+    // to be found.
+    'indexed' => getenv('EVENTS_SITE_INDEXED') !== '0',
     // Where the cache, the compiled templates, the log and the secret are kept.
     'var' => getenv('EVENTS_SITE_VAR') ?: __DIR__ . '/var',
 ];

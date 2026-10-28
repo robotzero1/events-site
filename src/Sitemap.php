@@ -21,9 +21,16 @@ final class Sitemap
     {
     }
 
-    /** `robots.txt`: every page may be read, but for the API's and the panel's, and the sitemap is here. */
-    public static function robots(string $siteUrl): string
+    /**
+     * `robots.txt`: every page may be read, but for the API's and the panel's, and the sitemap is here. A site not
+     * yet to be indexed lets nothing be read.
+     */
+    public static function robots(string $siteUrl, bool $indexed = true): string
     {
+        if (!$indexed) {
+            return "User-agent: *\nDisallow: /\n";
+        }
+
         return "User-agent: *\nDisallow: /api/\nDisallow: /admin/\n\nSitemap: {$siteUrl}/sitemap.xml\n";
     }
 

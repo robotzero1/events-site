@@ -33,6 +33,7 @@ It asks the API at `http://127.0.0.1:8000/api` unless told otherwise. Its settin
 | `api_connect_to` | `EVENTS_API_CONNECT_TO` | The address to connect to for the API's name (`127.0.0.1` on the server, where the API is asked by its name over HTTPS on the machine itself) |
 | `site_url` | `EVENTS_SITE_URL` | Where the site answers, for the addresses given in full in a page's head |
 | `secret` | `EVENTS_SITE_SECRET` | What signs the time a form was shown. Empty: one is made at random and kept in `var/secret` |
+| `indexed` | `EVENTS_SITE_INDEXED` | Whether search engines may read the site. False (`0` in the environment) has `robots.txt` turn them all away |
 | `var` | `EVENTS_SITE_VAR` | Where the cache, the compiled templates, the log (`log/site.log`) and the secret are kept |
 
 Emptying `var/cache` forgets every answer kept.

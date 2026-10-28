@@ -35,6 +35,7 @@ final class Site
      * @param Closure(): int|null $now the time as a Unix time, the real one when null
      * @param string $secret what signs what the site gives out and must know again (when a form was shown)
      * @param string $siteUrl where the site answers, with no `/` at the end, for the addresses the sitemap gives in full
+     * @param bool $indexed whether search engines may read it; when not, `robots.txt` turns them all away
      */
     public function __construct(
         private readonly Api $api,
@@ -45,6 +46,7 @@ final class Site
         private readonly ?Closure $now = null,
         string $secret = '',
         private readonly string $siteUrl = '',
+        private readonly bool $indexed = true,
     ) {
         $this->pages = $pages ?? self::pages($secret);
     }
@@ -72,7 +74,7 @@ final class Site
         }
 
         if ($visit->path === '/robots.txt') {
-            return Answer::document('text/plain; charset=utf-8', Sitemap::robots($this->siteUrl));
+            return Answer::document('text/plain; charset=utf-8', Sitemap::robots($this->siteUrl, $this->indexed));
         }
 
         // The bare site: whichever language the browser prefers. A redirect that depends on the browser is not

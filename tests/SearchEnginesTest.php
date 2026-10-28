@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace EventsSite\Tests;
 
 use EventsSite\Language;
+use EventsSite\Standalone\Standalone;
 use EventsSite\Tests\Support\Browsing;
 use EventsSite\Tests\Support\SavedApi;
+use EventsSite\Visit;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -201,5 +203,14 @@ final class SearchEnginesTest extends TestCase
 
         $this->assertSame('text/plain; charset=utf-8', $response->headers['Content-Type']);
         $this->assertSame("User-agent: *\nDisallow: /api/\nDisallow: /admin/\n\nSitemap: https://events.example/sitemap.xml\n", $response->body);
+    }
+
+    public function test_a_site_not_to_be_indexed_turns_every_robot_away(): void
+    {
+        $site = new Standalone($this->api, $this->cache, $this->log, Standalone::templates(), 'https://events.example', indexed: false);
+
+        $response = $site->respond(new Visit('/robots.txt', [], null, '203.0.113.7'));
+
+        $this->assertSame("User-agent: *\nDisallow: /\n", $response->body);
     }
 }

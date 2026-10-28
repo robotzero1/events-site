@@ -34,8 +34,9 @@ final class Standalone
         ?Assets $assets = null,
         ?\Closure $now = null,
         string $secret = 'not a secret: for tests',
+        bool $indexed = true,
     ) {
-        $this->site = new Site($api, $cache, $log, $twig, $pages, $now, $secret, $siteUrl);
+        $this->site = new Site($api, $cache, $log, $twig, $pages, $now, $secret, $siteUrl, $indexed);
         $this->assets = $assets ?? Assets::standard();
     }
 
@@ -49,6 +50,7 @@ final class Standalone
             self::templates($config['var'] . '/twig'),
             rtrim($config['site_url'], '/'),
             secret: Secret::of($config),
+            indexed: (bool) ($config['indexed'] ?? true),
         );
     }
 
