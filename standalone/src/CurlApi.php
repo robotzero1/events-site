@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace EventsSite\Standalone;
 
+use CURLFile;
 use EventsSite\Api\Api;
 use EventsSite\Api\ApiFailed;
 use EventsSite\Api\NotThere;
@@ -17,6 +18,9 @@ use EventsSite\Language;
  */
 final class CurlApi implements Api
 {
+    /** A form with a poster is given longer than a question: the file has to go up. */
+    private const SENDING_SECONDS = 30;
+
     public function __construct(
         private readonly string $base,
         private readonly ?string $host = null,
@@ -28,6 +32,24 @@ final class CurlApi implements Api
     {
         $address = rtrim($this->base, '/') . $path . ($query === [] ? '' : '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986));
 
+        return $this->ask($path, $address, $language, $visitor, [], $this->seconds);
+    }
+
+    public function post(string $path, array $fields, array $files, Language $language, string $visitor): array
+    {
+        $form = $fields;
+
+        foreach ($files as $name => $upload) {
+            $form[$name] = new CURLFile($upload->path, $upload->type !== '' ? $upload->type : null, $upload->name !== '' ? $upload->name : 'upload');
+        }
+
+        // Given as an array, curl sends it as multipart/form-data, as a file needs.
+        return $this->ask($path, rtrim($this->base, '/') . $path, $language, $visitor, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => $form], max($this->seconds, self::SENDING_SECONDS));
+    }
+
+    /** @return array<mixed> */
+    private function ask(string $path, string $address, Language $language, string $visitor, array $options, int $seconds): array
+    {
         $headers = [
             'Accept: application/json',
             "Accept-Language: {$language->value}",
@@ -40,11 +62,11 @@ final class CurlApi implements Api
         }
 
         $curl = curl_init($address);
-        curl_setopt_array($curl, [
+        curl_setopt_array($curl, $options + [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_CONNECTTIMEOUT => 2,
-            CURLOPT_TIMEOUT => $this->seconds,
+            CURLOPT_TIMEOUT => $seconds,
             CURLOPT_FOLLOWLOCATION => false,
         ]);
 
@@ -66,10 +88,9 @@ final class CurlApi implements Api
             throw new Refused($status, is_array($answer['errors'] ?? null) ? $answer['errors'] : [], (string) ($answer['message'] ?? ''));
         }
 
-        if ($status !== 200) {
+        if ($status !== 200 && $status !== 201) {
             throw new ApiFailed("{$path} answered {$status}");
         }
-
 
         if (!is_array($answer)) {
             throw new ApiFailed("{$path} did not answer with JSON");

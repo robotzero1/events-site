@@ -24,13 +24,15 @@ final class Answer
         public readonly ?string $location = null,
         public readonly ?string $page = null,
         public readonly bool $indexed = true,
+        /** @var list<string> scripts the page needs, by their asset's name, for the outer layer to load */
+        public readonly array $scripts = [],
     ) {
     }
 
     /** @param array<string, string> $alternates */
-    public static function page(int $status, Language $language, string $page, string $content, string $title, ?string $description, array $alternates, bool $indexed = true): self
+    public static function page(int $status, Language $language, string $page, string $content, string $title, ?string $description, array $alternates, bool $indexed = true, array $scripts = []): self
     {
-        return new self($status, $language, $content, $title, $description, $alternates, null, $page, $indexed && $status === 200);
+        return new self($status, $language, $content, $title, $description, $alternates, null, $page, $indexed && $status === 200, $scripts);
     }
 
     public static function redirect(int $status, Language $language, string $location): self

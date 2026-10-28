@@ -15,4 +15,9 @@ final class FailingApi implements Api
     {
         throw new ApiFailed('No answer');
     }
+
+    public function post(string $path, array $fields, array $files, Language $language, string $visitor): array
+    {
+        throw new ApiFailed('No answer');
+    }
 }

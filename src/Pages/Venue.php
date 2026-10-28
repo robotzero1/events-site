@@ -7,6 +7,7 @@ namespace EventsSite\Pages;
 use EventsSite\Api\Asking;
 use EventsSite\EventLines;
 use EventsSite\Route;
+use EventsSite\Visit;
 use EventsSite\Strings;
 use EventsSite\Text;
 
@@ -17,7 +18,7 @@ use EventsSite\Text;
  */
 final class Venue implements Page
 {
-    public function show(Route $route, Asking $asking): Shown
+    public function show(Route $route, Asking $asking, Visit $visit): Shown
     {
         $language = $route->language;
         $strings = new Strings($language);

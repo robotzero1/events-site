@@ -54,6 +54,12 @@ final class Asking
         return substr($this->now(), 0, 10);
     }
 
+    /** The time now, as a Unix time, by the same clock. */
+    public function time(): int
+    {
+        return ($this->now)();
+    }
+
     /** The time now in Spain, written as the API writes an Occurrence's: `2026-10-30T21:15`. */
     public function now(): string
     {
@@ -109,6 +115,28 @@ final class Asking
         $this->cache->put($key, new Kept($answer, $now + $lifetime, $now + $lifetime + self::GRACE));
 
         return $answer;
+    }
+
+    /**
+     * Send a form to the API on the visitor's behalf: never kept, and never answered from what is kept. What it will
+     * not take is `Refused`; a failure is logged and `Unavailable`, for the page to say while keeping what was typed.
+     *
+     * @param array<string, string> $fields
+     * @param array<string, \EventsSite\Upload> $files
+     * @return array<mixed>
+     *
+     * @throws Refused
+     * @throws Unavailable
+     */
+    public function post(string $path, array $fields, array $files = []): array
+    {
+        try {
+            return $this->api->post($path, $fields, $files, $this->language, $this->visitor);
+        } catch (ApiFailed $failure) {
+            $this->log->failure("{$path}: {$failure->getMessage()}");
+
+            throw new Unavailable($failure->getMessage(), 0, $failure);
+        }
     }
 
     /** One key for one question: the language, the path and the query whatever its order. */

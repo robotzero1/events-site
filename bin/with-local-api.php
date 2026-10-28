@@ -40,7 +40,9 @@ if (proc_close($seed) !== 0) {
 }
 
 $server = proc_open(
-    [PHP_BINARY, '-S', "127.0.0.1:{$port}", $apiDir . '/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php'],
+    // With the upload limits of the API's server (6 MB in a request of 8), not PHP's own 2 MB, so that a poster the
+    // Suggest page sends is judged by the API as it is there.
+    [PHP_BINARY, '-d', 'upload_max_filesize=6M', '-d', 'post_max_size=8M', '-S', "127.0.0.1:{$port}", $apiDir . '/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php'],
     [1 => ['file', PHP_OS_FAMILY === 'Windows' ? 'NUL' : '/dev/null', 'w'], 2 => ['file', PHP_OS_FAMILY === 'Windows' ? 'NUL' : '/dev/null', 'w']],
     $pipes,
     $apiDir . '/public',

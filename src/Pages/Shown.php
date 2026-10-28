@@ -18,6 +18,16 @@ final class Shown
         public readonly string $title,
         public readonly ?string $description = null,
         public readonly bool $indexed = true,
+        /** Scripts it needs, by their asset's name (`suggest.js`), each one that the page also works without. */
+        public readonly array $scripts = [],
+        /** Where to send the visitor instead (303), as after a form is taken, so that reloading does not send it again. */
+        public readonly ?string $redirect = null,
     ) {
+    }
+
+    /** Send the visitor on to `$address` (a path) instead of showing a page. */
+    public static function redirect(string $address): self
+    {
+        return new self('', [], '', redirect: $address);
     }
 }

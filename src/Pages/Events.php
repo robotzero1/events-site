@@ -10,6 +10,7 @@ use EventsSite\Api\Refused;
 use EventsSite\EventLines;
 use EventsSite\Places;
 use EventsSite\Route;
+use EventsSite\Visit;
 use EventsSite\Strings;
 
 /**
@@ -37,7 +38,7 @@ final class Events implements Page
     {
     }
 
-    public function show(Route $route, Asking $asking): Shown
+    public function show(Route $route, Asking $asking, Visit $visit): Shown
     {
         $strings = new Strings($route->language);
         $places = Places::of($asking);

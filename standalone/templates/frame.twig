@@ -6,6 +6,9 @@
   {% for stylesheet in stylesheets %}
   <link rel="stylesheet" href="{{ stylesheet }}">
   {% endfor %}
+  {% for script in scripts %}
+  <script src="{{ script }}" defer></script>
+  {% endfor %}
   <title>{{ answer.page == 'home' ? t('site.name') : answer.title ~ ' · ' ~ t('site.name') }}</title>
   {% if answer.description %}
   <meta name="description" content="{{ answer.description }}">

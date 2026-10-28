@@ -47,4 +47,9 @@ final class StandInApi implements Api
 
         return $this->answers[$path] ?? throw new \LogicException("The stand-in API was told nothing about {$path}.");
     }
+
+    public function post(string $path, array $fields, array $files, Language $language, string $visitor): array
+    {
+        return $this->get($path, $fields, $language, $visitor);
+    }
 }

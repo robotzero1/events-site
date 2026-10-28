@@ -58,10 +58,25 @@ trait Browsing
 
     protected function visit(string $path, array $query = [], ?string $acceptLanguage = null): Response
     {
-        $now = (new \DateTimeImmutable(($this->day ?? self::captured()) . ' ' . $this->time, new \DateTimeZone('Europe/Madrid')))->getTimestamp();
-        $site = new Standalone($this->api, $this->cache, $this->log, Standalone::templates(), 'https://events.example', now: fn () => $now);
+        return $this->site()->respond(new Visit($path, $query, $acceptLanguage, '203.0.113.7'));
+    }
 
-        return $site->respond(new Visit($path, $query, $acceptLanguage, '203.0.113.7'));
+    /**
+     * Send a form, as a browser posts it.
+     *
+     * @param array<string, string> $form
+     * @param array<string, \EventsSite\Upload> $files
+     */
+    protected function send(string $path, array $form, array $files = []): Response
+    {
+        return $this->site()->respond(new Visit($path, [], null, '203.0.113.7', 'POST', $form, $files));
+    }
+
+    private function site(): Standalone
+    {
+        $now = (new \DateTimeImmutable(($this->day ?? self::captured()) . ' ' . $this->time, new \DateTimeZone('Europe/Madrid')))->getTimestamp();
+
+        return new Standalone($this->api, $this->cache, $this->log, Standalone::templates(), 'https://events.example', now: fn () => $now);
     }
 
     protected function page(Response $response): DOMXPath

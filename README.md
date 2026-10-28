@@ -20,8 +20,10 @@ PHP 8.2 or newer with curl, and Composer.
 
 ```sh
 composer install
-php -S 127.0.0.1:8090 -t public public/router.php
+php -d upload_max_filesize=6M -d post_max_size=8M -S 127.0.0.1:8090 -t public public/router.php
 ```
+
+The two limits are for a poster sent with a Suggestion: PHP's own server would otherwise refuse one over 2 MB. On a server PHP-FPM reads them from `public/.user.ini`.
 
 It asks the API at `http://127.0.0.1:8000/api` unless told otherwise. Its settings are in `config.php`, each one also given by the environment or by a `config.local.php` beside it, which git ignores:
 
@@ -30,7 +32,8 @@ It asks the API at `http://127.0.0.1:8000/api` unless told otherwise. Its settin
 | `api` | `EVENTS_API` | The API, up to and including `/api` |
 | `api_host` | `EVENTS_API_HOST` | The name to ask the API by, when it is asked at a bare address on the same machine |
 | `site_url` | `EVENTS_SITE_URL` | Where the site answers, for the addresses given in full in a page's head |
-| `var` | `EVENTS_SITE_VAR` | Where the cache, the compiled templates and the log (`log/site.log`) are kept |
+| `secret` | `EVENTS_SITE_SECRET` | What signs the time a form was shown. Empty: one is made at random and kept in `var/secret` |
+| `var` | `EVENTS_SITE_VAR` | Where the cache, the compiled templates, the log (`log/site.log`) and the secret are kept |
 
 Emptying `var/cache` forgets every answer kept.
 

@@ -6,12 +6,13 @@ namespace EventsSite\Pages;
 
 use EventsSite\Api\Asking;
 use EventsSite\Route;
+use EventsSite\Visit;
 use EventsSite\Strings;
 
 /** What the site is and who makes it. Its words are the owner's to write; until then it says so. */
 final class About implements Page
 {
-    public function show(Route $route, Asking $asking): Shown
+    public function show(Route $route, Asking $asking, Visit $visit): Shown
     {
         $strings = new Strings($route->language);
 

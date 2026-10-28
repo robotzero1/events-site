@@ -11,7 +11,10 @@ $config = [
     'api_host' => getenv('EVENTS_API_HOST') ?: '',
     // Where the site answers, for the addresses given in full in a page's head.
     'site_url' => getenv('EVENTS_SITE_URL') ?: 'http://127.0.0.1:8090',
-    // Where the cache, the compiled templates and the log are kept.
+    // What signs what the site must know it gave out itself, as when a form was shown. Empty: one is made at random
+    // and kept in `var/secret`.
+    'secret' => getenv('EVENTS_SITE_SECRET') ?: '',
+    // Where the cache, the compiled templates, the log and the secret are kept.
     'var' => getenv('EVENTS_SITE_VAR') ?: __DIR__ . '/var',
 ];
 

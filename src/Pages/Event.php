@@ -8,6 +8,7 @@ use EventsSite\Api\Asking;
 use EventsSite\Api\NotThere;
 use EventsSite\Numbers;
 use EventsSite\Route;
+use EventsSite\Visit;
 use EventsSite\Strings;
 use EventsSite\Text;
 use EventsSite\When;
@@ -20,7 +21,7 @@ use EventsSite\When;
  */
 final class Event implements Page
 {
-    public function show(Route $route, Asking $asking): Shown
+    public function show(Route $route, Asking $asking, Visit $visit): Shown
     {
         $language = $route->language;
         $strings = new Strings($language);

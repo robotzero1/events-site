@@ -1,0 +1,48 @@
+{# Suggesting an event: a form sent to the site, which sends it on to the API. Nothing in it needs JavaScript; a
+   small script shrinks a large poster before it is sent. #}
+<article class="suggest prose">
+  <h1 class="page-title">{{ t('suggest.title') }}</h1>
+  <p>{{ t('suggest.intro') }}</p>
+
+  {% if refusals.form is defined %}<p class="refused" role="alert">{{ refusals.form }}</p>{% endif %}
+
+  <form class="suggest-form" method="post" action="{{ path('suggest') }}" enctype="multipart/form-data">
+    <div>
+      <label for="s-content">{{ t('suggest.content') }}</label>
+      <textarea id="s-content" name="content" rows="6" maxlength="5000" required aria-describedby="s-content-hint{% if refusals.content is defined %} s-content-refused{% endif %}"{% if refusals.content is defined %} aria-invalid="true"{% endif %}>{{ typed.content ?? '' }}</textarea>
+      <small id="s-content-hint">{{ t('suggest.contentHint') }}</small>
+      {% if refusals.content is defined %}<p class="refused" id="s-content-refused">{{ refusals.content }}</p>{% endif %}
+    </div>
+
+    <div>
+      <label for="s-link">{{ t('suggest.link') }}</label>
+      <input id="s-link" type="url" name="link" value="{{ typed.link ?? '' }}" maxlength="2000" inputmode="url" aria-describedby="s-link-hint{% if refusals.link is defined %} s-link-refused{% endif %}"{% if refusals.link is defined %} aria-invalid="true"{% endif %}>
+      <small id="s-link-hint">{{ t('suggest.linkHint') }}</small>
+      {% if refusals.link is defined %}<p class="refused" id="s-link-refused">{{ refusals.link }}</p>{% endif %}
+    </div>
+
+    <div>
+      <label for="s-email">{{ t('suggest.email') }}</label>
+      <input id="s-email" type="email" name="email" value="{{ typed.email ?? '' }}" maxlength="255" autocomplete="email" aria-describedby="s-email-hint{% if refusals.email is defined %} s-email-refused{% endif %}"{% if refusals.email is defined %} aria-invalid="true"{% endif %}>
+      <small id="s-email-hint">{{ t('suggest.emailHint') }}</small>
+      {% if refusals.email is defined %}<p class="refused" id="s-email-refused">{{ refusals.email }}</p>{% endif %}
+    </div>
+
+    <div>
+      <label for="s-poster">{{ t('suggest.poster') }}</label>
+      <input id="s-poster" type="file" name="poster" accept="image/jpeg,image/png,image/webp" aria-describedby="s-poster-hint{% if refusals.poster is defined or refusals.posterAgain is defined %} s-poster-refused{% endif %}"{% if refusals.poster is defined %} aria-invalid="true"{% endif %}>
+      <small id="s-poster-hint">{{ t('suggest.posterHint') }}</small>
+      {% if refusals.poster is defined %}<p class="refused" id="s-poster-refused">{{ refusals.poster }}</p>
+      {% elseif refusals.posterAgain is defined %}<p class="refused" id="s-poster-refused">{{ refusals.posterAgain }}</p>{% endif %}
+    </div>
+
+    {# Never seen by a person, nor reached from the keyboard: a program filling in every field fills this in too. #}
+    <div class="hidden" aria-hidden="true">
+      <label for="s-{{ honeypot }}">{{ t('suggest.honeypot') }}</label>
+      <input id="s-{{ honeypot }}" type="text" name="{{ honeypot }}" value="" tabindex="-1" autocomplete="off">
+    </div>
+    <input type="hidden" name="{{ shown_field }}" value="{{ shown }}">
+
+    <button type="submit">{{ t('suggest.send') }}</button>
+  </form>
+</article>

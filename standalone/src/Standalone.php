@@ -9,6 +9,7 @@ use EventsSite\Cache\Cache;
 use EventsSite\Log;
 use EventsSite\Site;
 use EventsSite\Templates;
+use EventsSite\Upload;
 use EventsSite\Visit;
 use Twig\Environment;
 
@@ -32,8 +33,9 @@ final class Standalone
         ?array $pages = null,
         ?Assets $assets = null,
         ?\Closure $now = null,
+        string $secret = 'not a secret: for tests',
     ) {
-        $this->site = new Site($api, $cache, $log, $twig, $pages, $now);
+        $this->site = new Site($api, $cache, $log, $twig, $pages, $now, $secret);
         $this->assets = $assets ?? Assets::standard();
     }
 
@@ -46,6 +48,7 @@ final class Standalone
             new FileLog($config['var'] . '/log/site.log'),
             self::templates($config['var'] . '/twig'),
             rtrim($config['site_url'], '/'),
+            secret: Secret::of($config),
         );
     }
 
@@ -76,6 +79,7 @@ final class Standalone
             'site_url' => $this->siteUrl,
             'other' => $answer->alternates[$answer->language->other()->value] ?? null,
             'stylesheets' => [$this->assets->address('site.css'), $this->assets->address('frame.css')],
+            'scripts' => array_map(fn (string $name) => $this->assets->address($name), $answer->scripts),
         ]);
 
         $headers = [
@@ -92,16 +96,20 @@ final class Standalone
         return new Response($answer->status, $headers, $body);
     }
 
-    /** A visit as PHP's own server variables give it. */
-    public static function visitFrom(array $server, array $query): Visit
+    /** A visit as PHP's own server variables give it, with a form's fields and files when one was sent. */
+    public static function visitFrom(array $server, array $query, array $form = [], array $files = []): Visit
     {
         $path = parse_url((string) ($server['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
+        $method = strtoupper((string) ($server['REQUEST_METHOD'] ?? 'GET'));
 
         return new Visit(
             is_string($path) ? rawurldecode($path) : '/',
             $query,
             $server['HTTP_ACCEPT_LANGUAGE'] ?? null,
             (string) ($server['REMOTE_ADDR'] ?? '127.0.0.1'),
+            $method,
+            $method === 'POST' ? $form : [],
+            $method === 'POST' ? array_filter(array_map([Upload::class, 'fromPhp'], $files)) : [],
         );
     }
 }

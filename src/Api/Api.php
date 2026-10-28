@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EventsSite\Api;
 
 use EventsSite\Language;
+use EventsSite\Upload;
 
 /**
  * The events API, as the core knows it. Standalone it is asked with curl; in WordPress it will be asked with
@@ -25,4 +26,17 @@ interface Api
      * @throws ApiFailed when it does not answer, or answers with anything but what was asked for
      */
     public function get(string $path, array $query, Language $language, string $visitor): array;
+
+    /**
+     * Send a form, as `POST /api{$path}` with its fields and files, on behalf of the visitor. Gives the decoded answer
+     * of one that was taken (200 or 201).
+     *
+     * @param array<string, string> $fields
+     * @param array<string, Upload> $files
+     * @return array<mixed>
+     *
+     * @throws Refused when it will not take it (422) or the visitor sends too often (429)
+     * @throws ApiFailed when it does not answer, or answers with anything else
+     */
+    public function post(string $path, array $fields, array $files, Language $language, string $visitor): array;
 }

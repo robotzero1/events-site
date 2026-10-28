@@ -72,7 +72,7 @@ final class SiteTest extends TestCase
     private function asking(): array
     {
         return array_replace(Site::pages(), ['about' => new class implements Page {
-            public function show(Route $route, Asking $asking): Shown
+            public function show(Route $route, Asking $asking, Visit $visit): Shown
             {
                 $regions = $asking->get('/regions', [], Asking::REFERENCE_LIST);
 
@@ -159,9 +159,12 @@ final class SiteTest extends TestCase
         $this->assertSame('/es/', $this->attribute($page, '//a[@hreflang="es"]/@href'));
     }
 
-    public function test_a_page_not_built_yet_is_not_found(): void
+    public function test_an_address_whose_page_the_site_has_not_got_is_not_found(): void
     {
-        $this->assertSame(404, $this->visit('/en/suggest')->status);
+        $pages = Site::pages();
+        unset($pages['about']);
+
+        $this->assertSame(404, $this->visit('/en/about', pages: $pages)->status);
     }
 
     public function test_a_page_asks_the_api_with_the_visitors_address_and_its_language(): void
@@ -209,7 +212,7 @@ final class SiteTest extends TestCase
     public function test_a_page_whose_thing_the_api_does_not_have_is_not_found(): void
     {
         $pages = Site::pages() + ['event' => new class implements Page {
-            public function show(Route $route, Asking $asking): Shown
+            public function show(Route $route, Asking $asking, Visit $visit): Shown
             {
                 $asking->get("/events/{$route->ref}", [], Asking::LISTING);
 

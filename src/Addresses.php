@@ -33,6 +33,8 @@ final class Addresses
         'q' => ['es' => 'q', 'en' => 'q'],
         'sort' => ['es' => 'orden', 'en' => 'sort'],
         'page' => ['es' => 'pagina', 'en' => 'page'],
+        // That a Suggestion has been sent, on the thank-you that follows.
+        'sent' => ['es' => 'enviado', 'en' => 'sent'],
     ];
 
     private const REF = '[a-z0-9][a-z0-9-]*';

@@ -25,6 +25,16 @@ final class SavedApi implements Api
     private array $instead = [];
 
     /**
+     * Every form sent, with its fields and the names of its files.
+     *
+     * @var list<array{path: string, fields: array<string, string>, files: array<string, \EventsSite\Upload>, language: Language, visitor: string}>
+     */
+    public array $sent = [];
+
+    /** What the API says when it takes a Suggestion (`SuggestionController::store()`, 201). */
+    public const TAKEN = ['message' => 'Thank you. Your suggestion has been sent.'];
+
+    /**
      * Have one path answered otherwise, whatever its query: for what the known state cannot show, as a price or a
      * page beyond the first. The answer should be a saved one changed (`answer()`), so that its shape stays the API's.
      *
@@ -35,6 +45,21 @@ final class SavedApi implements Api
         $this->instead[$path] = $answer;
 
         return $this;
+    }
+
+    /**
+     * A form sent is never captured, sending one changing what the API holds: it is taken as the API takes a
+     * Suggestion, or answered as `instead()` says. The real check sends one to the real API.
+     */
+    public function post(string $path, array $fields, array $files, Language $language, string $visitor): array
+    {
+        $this->sent[] = ['path' => $path, 'fields' => $fields, 'files' => $files, 'language' => $language, 'visitor' => $visitor];
+
+        if (isset($this->instead[$path])) {
+            return $this->instead[$path] instanceof \Throwable ? throw $this->instead[$path] : $this->instead[$path];
+        }
+
+        return self::TAKEN;
     }
 
     /** A saved answer, to be changed and given `instead()`. */

@@ -89,6 +89,13 @@
 .events-site .trouble { max-width: 38rem; }
 .events-site .trouble p { margin-top: 1em; }
 
+/* ---------- Suggest an event ---------- */
+
+.events-site .suggest-form { display: grid; gap: 18px; margin-top: 20px; }
+.events-site .suggest-form textarea { min-height: 8rem; resize: vertical; }
+.events-site .suggest-form input[type='file'] { padding: 8px; background: var(--field); }
+.events-site .suggest-form button { justify-self: start; }
+
 /* ---------- Forms ---------- */
 
 .events-site label { display: block; margin-bottom: 4px; font-size: 0.85rem; font-weight: 600; }

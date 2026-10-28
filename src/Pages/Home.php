@@ -7,6 +7,7 @@ namespace EventsSite\Pages;
 use EventsSite\Api\Asking;
 use EventsSite\EventLines;
 use EventsSite\Route;
+use EventsSite\Visit;
 use EventsSite\Strings;
 use EventsSite\When;
 
@@ -23,7 +24,7 @@ final class Home implements Page
     /** How many events it shows at most. */
     public const MOST = 50;
 
-    public function show(Route $route, Asking $asking): Shown
+    public function show(Route $route, Asking $asking, Visit $visit): Shown
     {
         $strings = new Strings($route->language);
         $today = $asking->today();

@@ -14,6 +14,7 @@ use EventsSite\Pages\Event;
 use EventsSite\Pages\Events;
 use EventsSite\Pages\Home;
 use EventsSite\Pages\Page;
+use EventsSite\Pages\Suggest;
 use EventsSite\Pages\Venue;
 use Closure;
 use Twig\Environment;
@@ -32,6 +33,7 @@ final class Site
     /**
      * @param array<string, Page>|null $pages by the name `Addresses` knows each by; the site's own when null
      * @param Closure(): int|null $now the time as a Unix time, the real one when null
+     * @param string $secret what signs what the site gives out and must know again (when a form was shown)
      */
     public function __construct(
         private readonly Api $api,
@@ -40,14 +42,16 @@ final class Site
         private readonly Environment $twig,
         ?array $pages = null,
         private readonly ?Closure $now = null,
+        string $secret = '',
     ) {
-        $this->pages = $pages ?? self::pages();
+        $this->pages = $pages ?? self::pages($secret);
     }
 
     /** @return array<string, Page> */
-    public static function pages(): array
+    public static function pages(string $secret = ''): array
     {
         return [
+            'suggest' => new Suggest($secret),
             'home' => new Home(),
             'about' => new About(),
             'events' => new Events(),
@@ -83,11 +87,15 @@ final class Site
         $asking = new Asking($this->api, $this->cache, $this->log, $route->language, $visit->visitor, $this->now);
 
         try {
-            $shown = $this->pages[$route->name]->show($route, $asking);
+            $shown = $this->pages[$route->name]->show($route, $asking, $visit);
         } catch (NotThere) {
             return $this->notFound($route->language);
         } catch (Unavailable) {
             return $this->unavailable($route->language);
+        }
+
+        if ($shown->redirect !== null) {
+            return Answer::redirect(303, $route->language, $shown->redirect);
         }
 
         $content = $this->twig->render($shown->template, ['language' => $route->language, 'route' => $route] + $shown->vars);
@@ -95,7 +103,7 @@ final class Site
         return Answer::page(200, $route->language, $route->name, $content, $shown->title, $shown->description, [
             $route->language->value => Addresses::of($route->name, $route->language, $route->ref, $route->filters),
             $route->language->other()->value => Addresses::inOther($route),
-        ], $shown->indexed);
+        ], $shown->indexed, $shown->scripts);
     }
 
     private function notFound(Language $language): Answer
