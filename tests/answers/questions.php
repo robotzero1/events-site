@@ -18,6 +18,10 @@ return [
     ['/events', ['location' => 'motril', 'per_page' => 20], 'en'],
     ['/events', ['region' => 'granada', 'per_page' => 20], 'en'],
     ['/events', ['category' => 'mercados', 'per_page' => 20], 'en'],
+    // A Location's and a Category's own pages.
+    ['/events', ['location' => 'motril', 'per_page' => 20], 'es'],
+    ['/events', ['category' => 'cine', 'per_page' => 20], 'en'],
+    ['/events', ['category' => 'cine', 'per_page' => 20], 'es'],
     // A Search, best match first and by date, and one that finds nothing.
     ['/events', ['q' => 'market', 'per_page' => 20], 'en'],
     ['/events', ['q' => 'market', 'sort' => 'date', 'per_page' => 20], 'en'],

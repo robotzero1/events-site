@@ -51,6 +51,8 @@ final class Site
             'events' => new Events(),
             'event' => new Event(),
             'venue' => new Venue(),
+            'location' => new Events(Events::LOCATION),
+            'category' => new Events(Events::CATEGORY),
         ];
     }
 

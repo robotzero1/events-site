@@ -5,13 +5,20 @@
     {# A heading one below its day's: h3 in the listing, h4 where the days are themselves under a section. #}
     {% set level = name_level ?? 3 %}
     <h{{ level }} class="ev-name"><a href="{{ path('event', line.ref) }}"{% if line.lang %} lang="{{ line.lang }}"{% endif %}>{{ line.name }}</a></h{{ level }}>
-    {% set where = [line.where, line.until, line.more]|filter(part => part) %}
-    {% if where is not empty %}<p class="ev-where">{{ where|join(' · ') }}</p>{% endif %}
+    {# Where, linked: none is named on a Venue's own page, which is where. #}
+    {% if line.venue or line.location or line.until or line.more %}
+    <p class="ev-where">
+      {%- if line.venue %}<a href="{{ path('venue', line.venue.ref) }}">{{ line.venue.name }}</a>{% if line.location %}, {% endif %}{% endif -%}
+      {%- if line.location %}<a href="{{ path('location', line.location.ref) }}">{{ line.location.name }}</a>{% endif -%}
+      {%- if line.until %}{% if line.venue or line.location %} · {% endif %}{{ line.until }}{% endif -%}
+      {%- if line.more %}{% if line.venue or line.location or line.until %} · {% endif %}{{ line.more }}{% endif -%}
+    </p>
+    {% endif %}
     {% if line.cancelled or line.price or line.categories or line.rating %}
     <p class="ev-meta">
       {% if line.cancelled %}<span class="mark">{{ t('line.cancelled') }}</span>{% endif %}
       {% if line.price %}<span>{{ line.price }}</span>{% endif %}
-      {% if line.categories %}<span>{{ line.categories }}</span>{% endif %}
+      {% if line.categories %}<span>{% for category in line.categories %}<a href="{{ path('category', category.ref) }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</span>{% endif %}
       {% if line.rating %}<span class="stars"><span aria-hidden="true">★</span> {{ line.rating }}</span>{% endif %}
     </p>
     {% endif %}

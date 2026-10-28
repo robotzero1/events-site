@@ -72,7 +72,8 @@ final class EventLines
             // The language its name is in, when it has none in the page's.
             'lang' => $event['language'] !== $this->language->value ? $event['language'] : null,
             'when' => $withDay ? $this->when->dayAndTime($first) : $this->when->time($first),
-            'where' => $this->where($event),
+            'venue' => isset($event['venue']['ref']) ? ['ref' => $event['venue']['ref'], 'name' => $event['venue']['name']] : null,
+            'location' => isset($event['location']['ref']) ? ['ref' => $event['location']['ref'], 'name' => $event['location']['name']] : null,
             'until' => $lastDay !== null ? $this->strings->get('line.until', $this->when->day($lastDay)) : null,
             'more' => match (true) {
                 $others === 1 => $this->strings->get('line.moreOne'),
@@ -80,7 +81,7 @@ final class EventLines
                 default => null,
             },
             'price' => $event['price_from'] !== null ? $this->strings->get('line.price', Numbers::price((float) $event['price_from'], $this->language)) : null,
-            'categories' => implode(', ', array_map(fn (array $category) => $category['name'], $event['categories'])),
+            'categories' => array_map(fn (array $category) => ['ref' => $category['ref'], 'name' => $category['name']], $event['categories']),
             'rating' => $event['review_count'] > 0 && $event['rating'] !== null
                 ? ($event['review_count'] === 1
                     ? $this->strings->get('line.ratingOne', Numbers::rating((float) $event['rating'], $this->language))
@@ -91,11 +92,4 @@ final class EventLines
         ];
     }
 
-    /** Its Venue and Location, or null for a line that names neither, as a Venue's own coming events do. */
-    private function where(array $event): ?string
-    {
-        $places = array_filter([$event['venue']['name'] ?? null, $event['location']['name'] ?? null]);
-
-        return $places === [] ? null : implode(', ', $places);
-    }
 }

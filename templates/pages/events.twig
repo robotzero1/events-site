@@ -1,4 +1,5 @@
-{# What's on: the form of filters, then the events by day, or one by one for a Search best match first. #}
+{# What's on: the form of filters, then the events by day, or one by one for a Search best match first. On a
+   Location's or a Category's own page (`fixed`) that filter is the page's, and is not in the form. #}
 <h1 class="page-title">{{ heading }}</h1>
 
 {% if refusals.form is defined %}
@@ -6,7 +7,7 @@
 {% endif %}
 
 <div class="listing-grid">
-  <form class="filters" method="get" action="{{ path('events') }}" aria-label="{{ t('events.filters') }}">
+  <form class="filters" method="get" action="{{ path(here.name, here.ref) }}" aria-label="{{ t('events.filters') }}">
     <div>
       <label for="f-q">{{ t('events.words') }}</label>
       <input id="f-q" type="search" name="{{ field('q') }}" value="{{ filters.q ?? '' }}" placeholder="{{ t('events.wordsHint') }}"{% if refusals.q is defined %} aria-invalid="true" aria-describedby="f-q-refused"{% endif %}>
@@ -38,6 +39,7 @@
     </div>
 
     <div class="two">
+      {% if fixed != 'location' %}
       <div>
         <label for="f-place">{{ t('events.place') }}</label>
         <select id="f-place" name="{{ field('place') }}"{% if refusals.place is defined %} aria-invalid="true" aria-describedby="f-place-refused"{% endif %}>
@@ -53,6 +55,8 @@
         </select>
         {% if refusals.place is defined %}<p class="refused" id="f-place-refused">{{ refusals.place }}</p>{% endif %}
       </div>
+      {% endif %}
+      {% if fixed != 'category' %}
       <div>
         <label for="f-category">{{ t('events.category') }}</label>
         <select id="f-category" name="{{ field('category') }}"{% if refusals.category is defined %} aria-invalid="true" aria-describedby="f-category-refused"{% endif %}>
@@ -63,6 +67,7 @@
         </select>
         {% if refusals.category is defined %}<p class="refused" id="f-category-refused">{{ refusals.category }}</p>{% endif %}
       </div>
+      {% endif %}
     </div>
 
     <button type="submit">{{ t('events.show') }}</button>
@@ -82,7 +87,7 @@
 
     {% if total == 0 %}
     <p class="none">{{ searching ? t('events.noneFound', filters.q) : t('events.none') }}</p>
-    <p><a href="{{ path('events') }}">{{ t('events.widen') }}</a></p>
+    <p><a href="{{ path(here.name, here.ref) }}">{{ t('events.widen') }}</a></p>
     {% elseif events.one_by_one is defined %}
     <ol class="events">
       {% for line in events.one_by_one %}
@@ -104,9 +109,9 @@
 
     {% if pages > 1 %}
     <nav class="pager" aria-label="{{ t('events.pages') }}">
-      {% if page > 1 %}<a href="{{ path('events', null, filters|merge({page: page - 1 > 1 ? page - 1 : ''})) }}" rel="prev">{{ t('events.previous') }}</a>{% endif %}
+      {% if page > 1 %}<a href="{{ path(here.name, here.ref, filters|merge({page: page - 1 > 1 ? page - 1 : ''})) }}" rel="prev">{{ t('events.previous') }}</a>{% endif %}
       <span>{{ t('events.pageOf', page, pages) }}</span>
-      {% if page < pages %}<a href="{{ path('events', null, filters|merge({page: page + 1})) }}" rel="next">{{ t('events.next') }}</a>{% endif %}
+      {% if page < pages %}<a href="{{ path(here.name, here.ref, filters|merge({page: page + 1})) }}" rel="next">{{ t('events.next') }}</a>{% endif %}
     </nav>
     {% endif %}
     {% endif %}

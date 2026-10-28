@@ -22,10 +22,10 @@
                 ],
                 "occurrences": [
                     {
-                        "ref": "orwezgfh",
+                        "ref": "4erchp0g",
                         "all_day": true,
-                        "starts_at": "2026-10-27",
-                        "finishes_at": "2026-10-29",
+                        "starts_at": "2026-10-28",
+                        "finishes_at": "2026-10-30",
                         "cancelled": false
                     }
                 ],
@@ -63,9 +63,9 @@
                 ],
                 "occurrences": [
                     {
-                        "ref": "xuyfmlxn",
+                        "ref": "xjjejk31",
                         "all_day": false,
-                        "starts_at": "2026-11-04T20:00",
+                        "starts_at": "2026-11-05T20:00",
                         "finishes_at": null,
                         "cancelled": false
                     }
@@ -109,9 +109,9 @@
                 ],
                 "occurrences": [
                     {
-                        "ref": "2kaltumm",
+                        "ref": "4smiorax",
                         "all_day": false,
-                        "starts_at": "2026-11-08T20:00",
+                        "starts_at": "2026-11-09T20:00",
                         "finishes_at": null,
                         "cancelled": false
                     }

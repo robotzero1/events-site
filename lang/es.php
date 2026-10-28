@@ -126,6 +126,11 @@ return [
     'event.earlier' => 'Años anteriores',
     'event.earlierYear' => '%d',
 
+    // Las páginas de cada localidad y de cada tipo de evento.
+    'location.description' => 'Conciertos, mercados, fiestas, cine y más en %s, día a día.',
+    'category.title' => '%s: qué hay en la costa',
+    'category.description' => '%s de Almuñécar a Motril, día a día.',
+
     // La página de un lugar.
     'venue.description' => '%1$s en %2$s',
     'venue.inOther' => 'Este lugar aún no tiene texto en español, así que se muestra en inglés.',

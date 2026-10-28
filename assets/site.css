@@ -126,6 +126,7 @@
 
 .events-site .filters { display: grid; gap: 12px; margin-top: 16px; padding: 16px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
 .events-site .filters .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.events-site .filters .two > :only-child { grid-column: 1 / -1; }
 .events-site .count { margin-top: 20px; color: var(--muted); }
 .events-site .pager { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: center; margin-top: 32px; }
 

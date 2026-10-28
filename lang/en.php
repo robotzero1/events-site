@@ -126,6 +126,11 @@ return [
     'event.earlier' => 'Earlier years',
     'event.earlierYear' => '%d',
 
+    // A Location's and a Category's own pages.
+    'location.description' => 'Concerts, markets, fiestas, films and more in %s, day by day.',
+    'category.title' => "%s: what's on along the coast",
+    'category.description' => '%s from Almuñécar to Motril, day by day.',
+
     // A Venue's own page.
     'venue.description' => '%1$s in %2$s',
     'venue.inOther' => 'There is no English text for this place yet, so it is shown in Spanish.',
