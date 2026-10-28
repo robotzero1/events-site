@@ -5,6 +5,10 @@
 // what `SavedApi` gives the tests. A page that asks something new adds the question here and captures again.
 // Each is [path, query, language].
 
+// The known state's days are counted from the day it was made (`today.txt`, which the capture writes first), as is
+// what the front page asks for: today to a week on.
+$weekOn = (new DateTimeImmutable(trim((string) file_get_contents(__DIR__ . '/today.txt'))))->modify('+7 days')->format('Y-m-d');
+
 return [
     ['/regions', [], 'es'],
     ['/regions', [], 'en'],
@@ -18,6 +22,9 @@ return [
     ['/events', ['location' => 'motril', 'per_page' => 20], 'en'],
     ['/events', ['region' => 'granada', 'per_page' => 20], 'en'],
     ['/events', ['category' => 'mercados', 'per_page' => 20], 'en'],
+    // The front page: the coming week, 50 at most.
+    ['/events', ['to' => $weekOn, 'per_page' => 50], 'en'],
+    ['/events', ['to' => $weekOn, 'per_page' => 50], 'es'],
     // A Location's and a Category's own pages.
     ['/events', ['location' => 'motril', 'per_page' => 20], 'es'],
     ['/events', ['category' => 'cine', 'per_page' => 20], 'en'],

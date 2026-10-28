@@ -126,6 +126,17 @@ return [
     'event.earlier' => 'Años anteriores',
     'event.earlierYear' => '%d',
 
+    // La portada.
+    'home.title' => 'Qué hay en la costa',
+    'home.search' => 'Buscar eventos',
+    'home.searchButton' => 'Buscar',
+    'home.quick' => 'Accesos rápidos',
+    'home.today' => 'Hoy',
+    'home.weekend' => 'Este fin de semana',
+    'home.all' => 'Todos los días',
+    'home.none' => 'No hay nada previsto para la próxima semana.',
+    'home.everyDay' => 'Ver todos los días',
+
     // Las páginas de cada localidad y de cada tipo de evento.
     'location.description' => 'Conciertos, mercados, fiestas, cine y más en %s, día a día.',
     'category.title' => '%s: qué hay en la costa',

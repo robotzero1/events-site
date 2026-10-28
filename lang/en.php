@@ -126,6 +126,17 @@ return [
     'event.earlier' => 'Earlier years',
     'event.earlierYear' => '%d',
 
+    // The front page.
+    'home.title' => "What's on along the coast",
+    'home.search' => 'Search events',
+    'home.searchButton' => 'Search',
+    'home.quick' => 'Quick choices',
+    'home.today' => 'Today',
+    'home.weekend' => 'This weekend',
+    'home.all' => 'Every day',
+    'home.none' => 'Nothing is on in the next week.',
+    'home.everyDay' => 'See every day',
+
     // A Location's and a Category's own pages.
     'location.description' => 'Concerts, markets, fiestas, films and more in %s, day by day.',
     'category.title' => "%s: what's on along the coast",

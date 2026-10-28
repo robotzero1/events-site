@@ -129,6 +129,28 @@ final class When
             : self::dayOf($occurrence['starts_at']) < $today;
     }
 
+    /**
+     * This weekend, as the days a visitor means by it on `$today`: from Friday to Sunday, or what is left of it
+     * when it has begun.
+     *
+     * @return array{string, string} its first and last day
+     */
+    public static function weekend(string $today): array
+    {
+        $day = new DateTimeImmutable($today, new DateTimeZone('UTC'));
+        $weekday = (int) $day->format('N');
+        $friday = $weekday >= 5 ? $day : $day->modify('+' . (5 - $weekday) . ' days');
+        $sunday = $day->modify('+' . (7 - $weekday) . ' days');
+
+        return [$friday->format('Y-m-d'), $sunday->format('Y-m-d')];
+    }
+
+    /** The day `$days` after `$day`. */
+    public static function after(string $day, int $days): string
+    {
+        return (new DateTimeImmutable($day, new DateTimeZone('UTC')))->modify("+{$days} days")->format('Y-m-d');
+    }
+
     /** The last day of an all-day Occurrence that runs over several, or null. */
     public static function lastDayOf(array $occurrence): ?string
     {

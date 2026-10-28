@@ -74,6 +74,13 @@
 .events-site .site-foot { margin-top: 48px; padding-block: 24px 32px; border-top: 3px double var(--ink); font-size: 0.9rem; color: var(--muted); }
 .events-site .site-foot .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; }
 
+/* ---------- The front page ---------- */
+
+.events-site .hero { padding-bottom: 8px; }
+.events-site .lead { margin-top: 6px; font-size: 1.1rem; color: var(--muted); }
+.events-site .hero .search { margin-top: 18px; max-width: 640px; }
+.events-site .hero .chips { margin-top: 14px; }
+
 /* ---------- Text pages: About, not found, unavailable ---------- */
 
 .events-site .page-title { margin-top: 28px; font-family: var(--display); font-size: 2rem; font-weight: 600; line-height: 1.15; }

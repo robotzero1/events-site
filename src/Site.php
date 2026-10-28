@@ -12,6 +12,7 @@ use EventsSite\Cache\Cache;
 use EventsSite\Pages\About;
 use EventsSite\Pages\Event;
 use EventsSite\Pages\Events;
+use EventsSite\Pages\Home;
 use EventsSite\Pages\Page;
 use EventsSite\Pages\Venue;
 use Closure;
@@ -47,6 +48,7 @@ final class Site
     public static function pages(): array
     {
         return [
+            'home' => new Home(),
             'about' => new About(),
             'events' => new Events(),
             'event' => new Event(),

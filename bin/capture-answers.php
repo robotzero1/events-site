@@ -18,6 +18,16 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 $base = getenv('EVENTS_API') ?: exit("EVENTS_API is not set: run this through bin/with-local-api.php.\n");
 $api = new CurlApi($base, seconds: 30);
 
+// The known state's days are counted from the day it was made, so the tests take this as today, and the questions
+// that name a day count from it.
+$today = (new DateTimeImmutable('now', new DateTimeZone('Europe/Madrid')))->format('Y-m-d');
+file_put_contents(dirname(__DIR__) . '/tests/answers/today.txt', $today . "\n");
+
+// Every answer is captured afresh, so one no longer asked, as for a day now past, does not stay behind.
+foreach (glob(dirname(__DIR__) . '/tests/answers/*/*.json') ?: [] as $old) {
+    unlink($old);
+}
+
 foreach (require dirname(__DIR__) . '/tests/answers/questions.php' as [$path, $query, $language]) {
     $language = Language::from($language);
 
@@ -36,7 +46,4 @@ foreach (require dirname(__DIR__) . '/tests/answers/questions.php' as [$path, $q
     echo "{$language->value} {$path}: {$saved['status']}\n";
 }
 
-// The known state's days are counted from the day it was made, so the tests take this as today.
-$today = (new DateTimeImmutable('now', new DateTimeZone('Europe/Madrid')))->format('Y-m-d');
-file_put_contents(dirname(__DIR__) . '/tests/answers/today.txt', $today . "\n");
 echo "Captured on {$today}.\n";

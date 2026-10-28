@@ -57,6 +57,26 @@ final class WhenTest extends TestCase
         $this->assertSame($words, (new When($language))->occurrence($occurrence, '2026-10-30'));
     }
 
+    /** @return array<string, array{string, string, string}> */
+    public static function weekends(): array
+    {
+        // 26 October 2026 was a Monday.
+        return [
+            'on a Monday, the coming one' => ['2026-10-26', '2026-10-30', '2026-11-01'],
+            'on a Thursday, the coming one' => ['2026-10-29', '2026-10-30', '2026-11-01'],
+            'on a Friday, from that day' => ['2026-10-30', '2026-10-30', '2026-11-01'],
+            'on a Saturday, what is left of it' => ['2026-10-31', '2026-10-31', '2026-11-01'],
+            'on a Sunday, that day' => ['2026-11-01', '2026-11-01', '2026-11-01'],
+            'across the end of a year' => ['2026-12-31', '2027-01-01', '2027-01-03'],
+        ];
+    }
+
+    #[DataProvider('weekends')]
+    public function test_this_weekend(string $today, string $from, string $to): void
+    {
+        $this->assertSame([$from, $to], When::weekend($today));
+    }
+
     /** @return array<string, array{array, string, bool}> */
     public static function over(): array
     {

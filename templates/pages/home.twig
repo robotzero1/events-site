@@ -1,0 +1,32 @@
+{# The front page: a search, the quickest ways into the listing, and the coming week by day. #}
+<section class="hero" aria-labelledby="home-title">
+  <h1 class="page-title" id="home-title">{{ t('home.title') }}</h1>
+  <p class="lead">{{ t('site.description') }}</p>
+  <form class="search" role="search" method="get" action="{{ path('events') }}">
+    <label class="hidden" for="home-q">{{ t('home.search') }}</label>
+    <input id="home-q" type="search" name="{{ field('q') }}" placeholder="{{ t('events.wordsHint') }}">
+    <button type="submit">{{ t('home.searchButton') }}</button>
+  </form>
+  <nav class="chips" aria-label="{{ t('home.quick') }}">
+    <a href="{{ path('events', null, {from: today, to: today}) }}">{{ t('home.today') }}</a>
+    <a href="{{ path('events', null, {from: weekend.from, to: weekend.to}) }}">{{ t('home.weekend') }}</a>
+    <a href="{{ path('events') }}">{{ t('home.all') }}</a>
+  </nav>
+</section>
+
+{% if days is empty %}
+<p class="none">{{ t('home.none') }}</p>
+{% else %}
+{% for day in days %}
+<section class="day" aria-labelledby="day-{{ day.day }}">
+  <h2 id="day-{{ day.day }}">{{ day.heading }}{% if day.today %} <span class="today">{{ t('when.today') }}</span>{% endif %}</h2>
+  <ol class="events">
+    {% for line in day.lines %}
+    {% include 'parts/event-line.twig' %}
+    {% endfor %}
+  </ol>
+</section>
+{% endfor %}
+{% endif %}
+
+<p class="pager"><a class="button" href="{{ path('events') }}">{{ t('home.everyDay') }}</a></p>
