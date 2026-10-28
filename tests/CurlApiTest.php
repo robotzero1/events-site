@@ -50,9 +50,9 @@ final class CurlApiTest extends TestCase
         }
     }
 
-    private function api(?string $host = null, int $seconds = 5): CurlApi
+    private function api(int $seconds = 5): CurlApi
     {
-        return new CurlApi('http://127.0.0.1:' . self::PORT . '/api/', $host, $seconds);
+        return new CurlApi('http://127.0.0.1:' . self::PORT . '/api/', seconds: $seconds);
     }
 
     public function test_it_asks_for_json_in_the_language_for_the_visitor(): void
@@ -66,9 +66,21 @@ final class CurlApiTest extends TestCase
         $this->assertSame('127.0.0.1:' . self::PORT, $sent['host']);
     }
 
-    public function test_it_names_the_site_when_told_to(): void
+    public function test_it_connects_where_it_is_told_to_for_the_apis_name(): void
     {
-        $this->assertSame('events.example', $this->api('events.example')->get('/echo', [], Language::En, '127.0.0.1')['host']);
+        // A name nothing knows, connected to on this machine: what the server does for its own name.
+        $api = new CurlApi('http://events.invalid:' . self::PORT . '/api/', '127.0.0.1');
+
+        $sent = $api->get('/echo', [], Language::En, '203.0.113.7');
+
+        $this->assertSame('events.invalid:' . self::PORT, $sent['host']);
+        $this->assertSame('203.0.113.7', $sent['forwarded_for']);
+    }
+
+    public function test_without_being_told_it_connects_as_the_name_says(): void
+    {
+        $this->expectException(ApiFailed::class);
+        (new CurlApi('http://events.invalid:' . self::PORT . '/api/'))->get('/echo', [], Language::En, '127.0.0.1');
     }
 
     public function test_a_404_is_not_there(): void

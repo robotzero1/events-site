@@ -1,0 +1,12 @@
+#!/bin/bash
+# Bring the public website up to date with main. Run as deploy: events-site-deploy
+# Kept in the repository as deploy/events-site-deploy and installed as /usr/local/bin/events-site-deploy.
+set -euo pipefail
+cd /var/www/events-site
+git pull -q --ff-only
+composer install --no-dev --optimize-autoloader --no-interaction --quiet
+# Every answer kept is forgotten, so that a change to what a page asks shows at once. The site's var/ is its own.
+sudo -u events-site find var/cache -name '*.json' -delete 2>/dev/null || true
+# PHP keeps the old code in memory until it is reloaded.
+sudo systemctl reload php8.4-fpm
+git log --oneline -1

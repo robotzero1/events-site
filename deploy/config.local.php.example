@@ -1,0 +1,12 @@
+<?php
+
+// The live site's settings, copied to /var/www/events-site/config.local.php (which git ignores). Nothing here is
+// secret: the site's secret is made and kept in var/secret, readable by the site's user alone.
+
+return [
+    // The API by its own name over HTTPS, connected to on this machine, whose requests it believes X-Forwarded-For from.
+    'api' => 'https://events.firemouth.net/api',
+    'api_connect_to' => '127.0.0.1',
+    'site_url' => 'https://events.firemouth.net',
+    'var' => '/var/www/events-site/var',
+];

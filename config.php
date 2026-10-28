@@ -6,9 +6,10 @@
 $config = [
     // The API, up to and including `/api`.
     'api' => getenv('EVENTS_API') ?: 'http://127.0.0.1:8000/api',
-    // The name to ask the API by when it is asked at a bare address on the same machine, so that nginx gives
-    // the request to the API. Empty to send none.
-    'api_host' => getenv('EVENTS_API_HOST') ?: '',
+    // The address to connect to for the API's name, as on the server, where it is asked by its name over HTTPS
+    // but on the machine itself (127.0.0.1), whose requests are the ones the API believes X-Forwarded-For from.
+    // Empty to connect as the name says.
+    'api_connect_to' => getenv('EVENTS_API_CONNECT_TO') ?: '',
     // Where the site answers, for the addresses given in full in a page's head.
     'site_url' => getenv('EVENTS_SITE_URL') ?: 'http://127.0.0.1:8090',
     // What signs what the site must know it gave out itself, as when a form was shown. Empty: one is made at random

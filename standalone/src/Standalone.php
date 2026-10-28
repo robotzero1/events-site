@@ -43,7 +43,7 @@ final class Standalone
     public static function configured(array $config): self
     {
         return new self(
-            new CurlApi($config['api'], $config['api_host'] ?: null),
+            new CurlApi($config['api'], $config['api_connect_to'] ?: null),
             new FileCache($config['var'] . '/cache'),
             new FileLog($config['var'] . '/log/site.log'),
             self::templates($config['var'] . '/twig'),

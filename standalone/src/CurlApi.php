@@ -13,8 +13,10 @@ use EventsSite\Language;
 
 /**
  * The API asked with PHP's curl. Every request says which language it wants and passes on the visitor's address in
- * `X-Forwarded-For`, which the API believes from this server alone. On the server the API is asked on the same
- * machine: `$host` then names the site, so that nginx gives the request to the API.
+ * `X-Forwarded-For`, which the API believes from its own machine alone. On the server the API is asked by its own
+ * address (`https://events.firemouth.net/api`) but connected to on the machine itself (`$connectTo`, `127.0.0.1`),
+ * as curl's `CURLOPT_RESOLVE` does: the certificate is the site's, and the API sees the request come from
+ * `127.0.0.1`, which it believes. Asking `http://127.0.0.1` would not do: the server sends plain HTTP on to HTTPS.
  */
 final class CurlApi implements Api
 {
@@ -23,7 +25,7 @@ final class CurlApi implements Api
 
     public function __construct(
         private readonly string $base,
-        private readonly ?string $host = null,
+        private readonly ?string $connectTo = null,
         private readonly int $seconds = 5,
     ) {
     }
@@ -47,6 +49,15 @@ final class CurlApi implements Api
         return $this->ask($path, rtrim($this->base, '/') . $path, $language, $visitor, [CURLOPT_POST => true, CURLOPT_POSTFIELDS => $form], max($this->seconds, self::SENDING_SECONDS));
     }
 
+    /** The API's name and port, and the address to connect to for them: `events.firemouth.net:443:127.0.0.1`. */
+    private function resolving(): string
+    {
+        $parts = parse_url($this->base);
+        $port = $parts['port'] ?? (($parts['scheme'] ?? 'http') === 'https' ? 443 : 80);
+
+        return "{$parts['host']}:{$port}:{$this->connectTo}";
+    }
+
     /** @return array<mixed> */
     private function ask(string $path, string $address, Language $language, string $visitor, array $options, int $seconds): array
     {
@@ -57,8 +68,8 @@ final class CurlApi implements Api
             'User-Agent: events-site',
         ];
 
-        if ($this->host !== null) {
-            $headers[] = "Host: {$this->host}";
+        if ($this->connectTo !== null) {
+            $options[CURLOPT_RESOLVE] = [$this->resolving()];
         }
 
         $curl = curl_init($address);

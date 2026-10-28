@@ -30,12 +30,21 @@ It asks the API at `http://127.0.0.1:8000/api` unless told otherwise. Its settin
 | Setting | Environment | Means |
 | --- | --- | --- |
 | `api` | `EVENTS_API` | The API, up to and including `/api` |
-| `api_host` | `EVENTS_API_HOST` | The name to ask the API by, when it is asked at a bare address on the same machine |
+| `api_connect_to` | `EVENTS_API_CONNECT_TO` | The address to connect to for the API's name (`127.0.0.1` on the server, where the API is asked by its name over HTTPS on the machine itself) |
 | `site_url` | `EVENTS_SITE_URL` | Where the site answers, for the addresses given in full in a page's head |
 | `secret` | `EVENTS_SITE_SECRET` | What signs the time a form was shown. Empty: one is made at random and kept in `var/secret` |
 | `var` | `EVENTS_SITE_VAR` | Where the cache, the compiled templates, the log (`log/site.log`) and the secret are kept |
 
 Emptying `var/cache` forgets every answer kept.
+
+## The server
+
+The site runs at the root of https://events.firemouth.net, on the server the API is on, beside the API (`/api/`, `/storage/`, `/up`) and its admin panel (`/admin/`).
+
+- **It is in `/var/www/events-site`**, cloned from this repository and owned by `deploy`, and runs as a user of its own, `events-site`, in a PHP-FPM pool of its own (`deploy/php-fpm/events-site.conf`, installed as `/etc/php/8.4/fpm/pool.d/events-site.conf`), so that it cannot read the API's settings. Its `var/` (cache, log, secret) is the only thing it writes, and belongs to `events-site`.
+- **Its settings** are `config.local.php` (from `deploy/config.local.php.example`): it asks the API by its own name over HTTPS but connects to `127.0.0.1`, which is the one address the API believes `X-Forwarded-For` from. Plain HTTP would not do: the server sends it on to HTTPS.
+- **nginx** gives it every address the API and the panel do not take, by `deploy/nginx/events-site.conf`, copied to `/etc/nginx/snippets/` and included in the server block of `/etc/nginx/sites-available/events` in place of the API's own `location /` (the file as it was is kept as `/root/events-site.before-public-site`). After changing the snippet: copy it again, `sudo nginx -t`, `sudo systemctl reload nginx`.
+- **Bringing it up to date** with `main` is `events-site-deploy`, as `deploy`: it pulls, installs, forgets the answers kept and reloads PHP. The command is `deploy/events-site-deploy`; after changing it, install it with `sudo install -m 755 deploy/events-site-deploy /usr/local/bin/events-site-deploy`.
 
 ## Tests
 
