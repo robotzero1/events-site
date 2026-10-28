@@ -2,6 +2,10 @@
 
 The public website of the events listing: plain PHP 8.2+ with Twig, building every page on the server from the events API, which is in a private repository (`robotzero1/Events`, checked out as `../Events`). This repository is public, as a portfolio piece: nothing secret goes in it, nor anything that would help someone abuse the site, nor links into the private repository. The spec is issue #1; the tickets are #2 to #12. How to run and test it is in `README.md`.
 
+## Live
+
+It answers at the root of https://events.firemouth.net since 2026-10-28 (#12), on the API's server, as its own user in its own PHP pool; how is under "The server" in `README.md`. Bring it up to date with `events-site-deploy` on the server, as `deploy`, after pushing to `main`. Run the real checks against the local API before (`bin/with-local-api.php`), never against the live site: they send Suggestions.
+
 ## Decisions
 
 - **Two layers.** The core (`src/`, `templates/`, `lang/`) knows nothing of where it runs; the standalone layer (`standalone/`, `public/`) runs it on its own and is what a WordPress plugin is to replace. Anything WordPress would do differently (asking over HTTP, keeping answers, logging, the page frame, sending a response) is behind an interface or in the standalone layer. The core gives back an `Answer`.
