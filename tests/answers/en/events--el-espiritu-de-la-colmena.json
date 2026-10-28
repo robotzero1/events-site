@@ -12,7 +12,8 @@
                 "name": "Centro Cultural",
                 "description": null,
                 "language": "es",
-                "status": "published"
+                "status": "published",
+                "address": "Calle José Felipe Soto, 1"
             },
             "location": {
                 "ref": "motril",
@@ -41,7 +42,7 @@
             "review_count": 0,
             "occurrences": [
                 {
-                    "ref": "yvqclkse",
+                    "ref": "bactdjif",
                     "all_day": false,
                     "starts_at": "2026-11-05T20:00",
                     "finishes_at": null,

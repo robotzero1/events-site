@@ -79,6 +79,8 @@ final class EventPageTest extends TestCase
         $this->assertSame('https://cineclub.example/Pelicula/el-espiritu-de-la-colmena/', $this->attribute($page, '//p[@class="more"]/a/@href'));
         $this->assertSame('No one has reviewed it yet.', $this->text($page, '//section[@class="reviews"]/p'));
         $this->assertSame(0, $page->query('//section[@class="comments"]')->length);
+        // Its Venue's street address, which the API gives with the Venue.
+        $this->assertStringContainsString('Calle José Felipe Soto, 1', $this->text($page, '//aside//dt[text()="Where"]/following-sibling::dd'));
         // The Venue has no coordinates, so there is no map to send anyone to.
         $this->assertSame(0, $page->query('//a[text()="See it on a map"]')->length);
     }

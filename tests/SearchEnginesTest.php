@@ -61,6 +61,7 @@ final class SearchEnginesTest extends TestCase
         $this->assertSame(self::inDays(8) . "T20:00:00{$offset}", $event['startDate']);
         $this->assertArrayNotHasKey('endDate', $event);
         $this->assertSame('Centro Cultural', $event['location']['name']);
+        $this->assertSame('Calle José Felipe Soto, 1', $event['location']['address']['streetAddress']);
     }
 
     public function test_everything_an_event_can_say(): void

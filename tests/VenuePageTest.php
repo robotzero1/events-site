@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * A Venue's page, against the known state: the Centro Cultural in Motril, a hall written in Spanish only, with
- * nothing but its name, type and Location, and two films coming up, eight and twelve days on.
+ * nothing but its name, type, Location and street address, and two films coming up, eight and twelve days on.
  */
 final class VenuePageTest extends TestCase
 {
@@ -67,7 +67,7 @@ final class VenuePageTest extends TestCase
         $page = $this->page($this->visit('/en/venue/centro-cultural'));
 
         $this->assertSame(['Where'], $this->texts($page, '//aside//dt'));
-        $this->assertSame('Motril (Granada)', $this->text($page, '//aside//dd'));
+        $this->assertSame('Calle José Felipe Soto, 1 Motril (Granada)', $this->text($page, '//aside//dd'));
         $this->assertSame(0, $page->query('//div[@class="gallery"]')->length);
         $this->assertSame(0, $page->query('//div[@class="description"]')->length);
     }
