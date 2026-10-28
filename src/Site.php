@@ -34,6 +34,7 @@ final class Site
      * @param array<string, Page>|null $pages by the name `Addresses` knows each by; the site's own when null
      * @param Closure(): int|null $now the time as a Unix time, the real one when null
      * @param string $secret what signs what the site gives out and must know again (when a form was shown)
+     * @param string $siteUrl where the site answers, with no `/` at the end, for the addresses the sitemap gives in full
      */
     public function __construct(
         private readonly Api $api,
@@ -43,6 +44,7 @@ final class Site
         ?array $pages = null,
         private readonly ?Closure $now = null,
         string $secret = '',
+        private readonly string $siteUrl = '',
     ) {
         $this->pages = $pages ?? self::pages($secret);
     }
@@ -64,6 +66,15 @@ final class Site
 
     public function answer(Visit $visit): Answer
     {
+        // What search engines read before any page: where everything is, and that they may.
+        if ($visit->path === '/sitemap.xml') {
+            return $this->sitemap($visit);
+        }
+
+        if ($visit->path === '/robots.txt') {
+            return Answer::document('text/plain; charset=utf-8', Sitemap::robots($this->siteUrl));
+        }
+
         // The bare site: whichever language the browser prefers. A redirect that depends on the browser is not
         // one to remember, so it is a 302.
         if ($visit->path === '/' || $visit->path === '') {
@@ -103,7 +114,18 @@ final class Site
         return Answer::page(200, $route->language, $route->name, $content, $shown->title, $shown->description, [
             $route->language->value => Addresses::of($route->name, $route->language, $route->ref, $route->filters),
             $route->language->other()->value => Addresses::inOther($route),
-        ], $shown->indexed, $shown->scripts);
+        ], $shown->indexed, $shown->scripts, $shown->image, $shown->structured);
+    }
+
+    private function sitemap(Visit $visit): Answer
+    {
+        $asking = new Asking($this->api, $this->cache, $this->log, Language::Es, $visit->visitor, $this->now);
+
+        try {
+            return Answer::document('application/xml; charset=utf-8', (new Sitemap($this->siteUrl))->of($asking));
+        } catch (Unavailable) {
+            return $this->unavailable(Language::Es);
+        }
     }
 
     private function notFound(Language $language): Answer

@@ -23,6 +23,24 @@
   {% endfor %}
   <link rel="alternate" hreflang="x-default" href="{{ site_url }}/">
   {% endif %}
+  {# What a link's preview shows, on every page. #}
+  <meta property="og:site_name" content="{{ t('site.name') }}">
+  <meta property="og:title" content="{{ answer.title }}">
+  {% if answer.description %}<meta property="og:description" content="{{ answer.description }}">{% endif %}
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="{{ language.value == 'es' ? 'es_ES' : 'en_GB' }}">
+  <meta property="og:locale:alternate" content="{{ language.value == 'es' ? 'en_GB' : 'es_ES' }}">
+  {% if answer.alternates is not empty %}<meta property="og:url" content="{{ site_url ~ answer.alternates[language.value] }}">{% endif %}
+  {% if answer.image %}
+  <meta property="og:image" content="{{ answer.image }}">
+  <meta name="twitter:card" content="summary_large_image">
+  {% else %}
+  <meta name="twitter:card" content="summary">
+  {% endif %}
+  {% if structured %}
+  {# Made by the core and written as JSON with every < escaped, so nothing in it can close this script. #}
+  <script type="application/ld+json">{{ structured|raw }}</script>
+  {% endif %}
 </head>
 <body>
 <div class="events-site">

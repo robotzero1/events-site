@@ -45,6 +45,7 @@ final class Venue implements Page
                 'caption' => $photo['description'],
             ], $venue['photos']),
             'days' => (new EventLines($language))->byDay($venue['upcoming_events'], $asking->today(), $asking->today()),
-        ], $venue['name'], Text::summary($venue['description']) ?? $strings->get('venue.description', $venue['venue_type']['name'], $venue['location']['name']));
+        ], $venue['name'], Text::summary($venue['description']) ?? $strings->get('venue.description', $venue['venue_type']['name'], $venue['location']['name']),
+            image: Text::webAddress($venue['photos'][0]['url'] ?? null));
     }
 }

@@ -1,0 +1,31 @@
+{
+    "status": 200,
+    "answer": {
+        "data": [
+            {
+                "ref": "centro-cultural",
+                "name": "Centro Cultural",
+                "description": null,
+                "language": "es",
+                "location": {
+                    "ref": "motril",
+                    "name": "Motril",
+                    "description": null,
+                    "language": "es",
+                    "region": {
+                        "ref": "granada",
+                        "name": "Granada",
+                        "description": null,
+                        "language": "es"
+                    }
+                },
+                "venue_type": {
+                    "ref": "sala",
+                    "name": "Sala",
+                    "description": null,
+                    "language": "es"
+                }
+            }
+        ]
+    }
+}

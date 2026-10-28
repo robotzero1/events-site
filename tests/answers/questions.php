@@ -49,6 +49,9 @@ return [
     ['/venues/centro-cultural', [], 'en'],
     ['/venues/centro-cultural', [], 'es'],
     ['/venues/no-such-venue', [], 'en'],
+    // The sitemap: every Venue, and every event from today on, a hundred at a time.
+    ['/venues', [], 'es'],
+    ['/events', ['per_page' => 100, 'page' => 1], 'es'],
     // The API's own "not found", which a page turns into its own.
     ['/events/no-such-event', [], 'en'],
 ];

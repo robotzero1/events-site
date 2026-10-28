@@ -10,6 +10,7 @@ use EventsSite\Numbers;
 use EventsSite\Route;
 use EventsSite\Visit;
 use EventsSite\Strings;
+use EventsSite\StructuredData;
 use EventsSite\Text;
 use EventsSite\When;
 
@@ -96,6 +97,8 @@ final class Event implements Page
                     'rating' => $strings->get('event.outOf', $review['rating']),
                 ], $edition['reviews']),
             ], array_filter($event['earlier_editions'], fn (array $edition) => $edition['reviews'] !== [])),
-        ], $event['name'], Text::summary($event['description']) ?? $strings->get('site.description'));
+        ], $event['name'], Text::summary($event['description']) ?? $strings->get('site.description'),
+            image: Text::webAddress($event['photos'][0]['url'] ?? null),
+            structured: StructuredData::event($event, $venue));
     }
 }

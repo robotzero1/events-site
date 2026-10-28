@@ -35,7 +35,7 @@ final class Standalone
         ?\Closure $now = null,
         string $secret = 'not a secret: for tests',
     ) {
-        $this->site = new Site($api, $cache, $log, $twig, $pages, $now, $secret);
+        $this->site = new Site($api, $cache, $log, $twig, $pages, $now, $secret, $siteUrl);
         $this->assets = $assets ?? Assets::standard();
     }
 
@@ -66,6 +66,10 @@ final class Standalone
 
         $answer = $this->site->answer($visit);
 
+        if ($answer->isDocument()) {
+            return new Response(200, ['Content-Type' => (string) $answer->contentType, 'X-Content-Type-Options' => 'nosniff'], $answer->content);
+        }
+
         if ($answer->isRedirect()) {
             return new Response($answer->status, [
                 'Location' => $answer->location,
@@ -80,6 +84,10 @@ final class Standalone
             'other' => $answer->alternates[$answer->language->other()->value] ?? null,
             'stylesheets' => [$this->assets->address('site.css'), $this->assets->address('frame.css')],
             'scripts' => array_map(fn (string $name) => $this->assets->address($name), $answer->scripts),
+            // As JSON in which no `<` can close the script it is put in, whatever the API's text holds.
+            'structured' => $answer->structured !== null
+                ? json_encode($answer->structured, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
+                : null,
         ]);
 
         $headers = [
