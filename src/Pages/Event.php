@@ -9,6 +9,7 @@ use EventsSite\Api\NotThere;
 use EventsSite\Numbers;
 use EventsSite\Route;
 use EventsSite\Strings;
+use EventsSite\Text;
 use EventsSite\When;
 
 /**
@@ -50,7 +51,9 @@ final class Event implements Page
         return new Shown('pages/event.twig', [
             'event' => $event,
             'lang' => $event['language'] !== $language->value ? $event['language'] : null,
-            'paragraphs' => self::paragraphs($event['description']),
+            'paragraphs' => Text::paragraphs($event['description']),
+            // Only a web page's address is linked.
+            'source_url' => Text::webAddress($event['source_url']),
             'cancelled' => $event['status'] === 'cancelled',
             'ended' => $ended,
             'times' => array_map(fn (array $occurrence) => [
@@ -92,34 +95,6 @@ final class Event implements Page
                     'rating' => $strings->get('event.outOf', $review['rating']),
                 ], $edition['reviews']),
             ], array_filter($event['earlier_editions'], fn (array $edition) => $edition['reviews'] !== [])),
-        ], $event['name'], self::summary($event['description']) ?? $strings->get('site.description'));
-    }
-
-    /** @return list<string> a description's paragraphs, kept apart by an empty line; its other lines are kept. */
-    private static function paragraphs(?string $description): array
-    {
-        if ($description === null || trim($description) === '') {
-            return [];
-        }
-
-        return array_values(array_filter(array_map('trim', preg_split('/\R\s*\R/u', $description)), fn ($paragraph) => $paragraph !== ''));
-    }
-
-    /** The start of a description, for a search engine's result or a link's preview: about 155 letters, cut at a word. */
-    private static function summary(?string $description): ?string
-    {
-        if ($description === null || trim($description) === '') {
-            return null;
-        }
-
-        $plain = trim(preg_replace('/\s+/u', ' ', $description));
-
-        if (mb_strlen($plain) <= 155) {
-            return $plain;
-        }
-
-        $cut = mb_substr($plain, 0, 155);
-
-        return rtrim(mb_substr($cut, 0, (int) mb_strrpos($cut, ' ')), ' ,.;:') . '…';
+        ], $event['name'], Text::summary($event['description']) ?? $strings->get('site.description'));
     }
 }

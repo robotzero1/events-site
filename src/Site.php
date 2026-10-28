@@ -13,6 +13,7 @@ use EventsSite\Pages\About;
 use EventsSite\Pages\Event;
 use EventsSite\Pages\Events;
 use EventsSite\Pages\Page;
+use EventsSite\Pages\Venue;
 use Closure;
 use Twig\Environment;
 
@@ -49,6 +50,7 @@ final class Site
             'about' => new About(),
             'events' => new Events(),
             'event' => new Event(),
+            'venue' => new Venue(),
         ];
     }
 

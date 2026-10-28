@@ -45,7 +45,7 @@
 }
 
 .events-site *, .events-site *::before, .events-site *::after { box-sizing: border-box; }
-.events-site h1, .events-site h2, .events-site h3, .events-site p, .events-site ul, .events-site ol, .events-site dl, .events-site dd, .events-site figure { margin: 0; }
+.events-site h1, .events-site h2, .events-site h3, .events-site h4, .events-site p, .events-site ul, .events-site ol, .events-site dl, .events-site dd, .events-site figure { margin: 0; }
 .events-site ul, .events-site ol { padding: 0; list-style: none; }
 .events-site img { max-width: 100%; height: auto; display: block; }
 .events-site a { color: var(--link); text-underline-offset: 0.15em; }
@@ -99,7 +99,7 @@
 /* ---------- Lists of events: an agenda by day ---------- */
 
 .events-site .day { margin-top: 32px; }
-.events-site .day > h2 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding-bottom: 6px; margin-bottom: 4px; border-bottom: 1px solid var(--ink); font-family: var(--display); font-size: 1.4rem; font-weight: 600; }
+.events-site .day > h2, .events-site .day > h3 { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; padding-bottom: 6px; margin-bottom: 4px; border-bottom: 1px solid var(--ink); font-family: var(--display); font-size: 1.4rem; font-weight: 600; }
 .events-site .today { padding: 2px 10px; border-radius: var(--radius); font-family: var(--body); font-size: 0.8rem; font-weight: 700; color: var(--today-ink); background: var(--today); }
 
 .events-site .ev { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); grid-template-areas: 'when body'; gap: 0 12px; align-items: start; padding: 14px 0; border-bottom: 1px solid var(--line); }
@@ -135,6 +135,7 @@
 .events-site .event-head h1 { margin-top: 8px; font-family: var(--display); font-size: 2.1rem; font-weight: 600; line-height: 1.1; }
 .events-site .status { margin-top: 10px; font-weight: 700; color: var(--accent); }
 .events-site .coming { margin-top: 8px; }
+.events-site .kind { margin-top: 8px; color: var(--muted); }
 .events-site .gallery { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-top: 20px; }
 .events-site .gallery img, .events-site .gallery .ph { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
 .events-site .gallery > figure:first-child { grid-row: span 2; }
@@ -155,6 +156,7 @@
 .events-site .times li { display: flex; flex-wrap: wrap; gap: 0 8px; padding: 4px 0; font-variant-numeric: tabular-nums; }
 .events-site .taglist { display: flex; flex-wrap: wrap; gap: 6px; }
 .events-site .taglist li { padding: 2px 10px; border-radius: 999px; font-size: 0.85rem; background: var(--ground); }
+.events-site .event-main > :first-child > .section-title:first-child { margin-top: 0; }
 .events-site .section-title { margin: 36px 0 12px; font-family: var(--display); font-size: 1.4rem; font-weight: 600; }
 .events-site .review, .events-site .comment { padding: 16px 0; border-top: 1px solid var(--line); }
 .events-site .review h3 { font-size: 1.05rem; }

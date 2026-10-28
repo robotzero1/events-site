@@ -36,6 +36,8 @@ return [
     ['/events/el-espiritu-de-la-colmena/reviews', [], 'en'],
     ['/events/el-espiritu-de-la-colmena/comments', [], 'en'],
     ['/venues/centro-cultural', [], 'en'],
+    ['/venues/centro-cultural', [], 'es'],
+    ['/venues/no-such-venue', [], 'en'],
     // The API's own "not found", which a page turns into its own.
     ['/events/no-such-event', [], 'en'],
 ];

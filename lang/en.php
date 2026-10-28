@@ -125,4 +125,16 @@ return [
     'event.moreComments' => 'These are the first %1$d of %2$d comments.',
     'event.earlier' => 'Earlier years',
     'event.earlierYear' => '%d',
+
+    // A Venue's own page.
+    'venue.description' => '%1$s in %2$s',
+    'venue.inOther' => 'There is no English text for this place yet, so it is shown in Spanish.',
+    'venue.facts' => 'Where it is and how to reach it',
+    'venue.contact' => 'Get in touch',
+    'venue.phone' => 'Phone',
+    'venue.email' => 'Email',
+    'venue.website' => 'Website',
+    'venue.elsewhere' => 'Elsewhere',
+    'venue.comingUp' => 'Coming up here',
+    'venue.nothingComing' => 'Nothing is coming up here just now.',
 ];

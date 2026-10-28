@@ -76,14 +76,15 @@
     {% endif %}
   </aside>
   <div class="event-main">
-    {% if lang %}<p class="in-other">{{ t('event.inOther') }}</p>{% endif %}
+    {# Said only of a description: a name in the other language is still its name. #}
+    {% if lang and paragraphs is not empty %}<p class="in-other">{{ t('event.inOther') }}</p>{% endif %}
     {% if paragraphs is not empty %}
     <div class="description"{% if lang %} lang="{{ lang }}"{% endif %}>
       {% for paragraph in paragraphs %}<p>{{ paragraph|nl2br }}</p>{% endfor %}
     </div>
     {% endif %}
-    {% if event.source_url %}
-    <p class="more"><a href="{{ event.source_url }}" rel="noopener noreferrer">{{ t('event.more') }}</a></p>
+    {% if source_url %}
+    <p class="more"><a href="{{ source_url }}" rel="noopener noreferrer">{{ t('event.more') }}</a></p>
     {% endif %}
 
     <section class="reviews" aria-labelledby="reviews">

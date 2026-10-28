@@ -1,0 +1,83 @@
+{# A Venue: how to find it and reach it, its photos, and what is coming up there. Everything it says is text. #}
+<p class="crumbs"><a href="{{ path('events') }}">{{ t('events.title') }}</a> › <a href="{{ path('location', venue.location.ref) }}">{{ venue.location.name }}</a></p>
+
+<div class="event-head"{% if lang %} lang="{{ lang }}"{% endif %}>
+  <h1>{{ venue.name }}</h1>
+</div>
+<p class="kind">{{ venue.venue_type.name }} · <a href="{{ path('location', venue.location.ref) }}">{{ venue.location.name }}</a> ({{ venue.location.region.name }})</p>
+
+{% if photos is not empty %}
+<div class="gallery">
+  {% for photo in photos %}
+  <figure>
+    <img src="{{ photo.url }}" alt="{{ photo.alt }}"{% if not loop.first %} loading="lazy"{% endif %}>
+    {% if photo.caption %}<figcaption>{{ photo.caption }}</figcaption>{% endif %}
+  </figure>
+  {% endfor %}
+</div>
+{% endif %}
+
+<div class="event-grid">
+  {# First, so that on a phone how to find it comes before everything else; a wide screen puts it beside. #}
+  <aside class="facts" aria-label="{{ t('venue.facts') }}">
+    <dl>
+      <dt>{{ t('event.where') }}</dt>
+      <dd>
+        {% if address %}{{ address }}<br>{% endif %}
+        <a href="{{ path('location', venue.location.ref) }}">{{ venue.location.name }}</a> ({{ venue.location.region.name }})
+        {% if map %}<br><a href="{{ map }}" rel="noopener noreferrer">{{ t('event.map') }}</a>{% endif %}
+      </dd>
+    </dl>
+    {% if phone or email or website %}
+    <dl>
+      <dt>{{ t('venue.contact') }}</dt>
+      <dd>
+        <ul class="plain">
+          {% if phone %}<li><span class="hidden">{{ t('venue.phone') }}: </span><a href="{{ phone.dial }}">{{ phone.words }}</a></li>{% endif %}
+          {% if email %}<li><span class="hidden">{{ t('venue.email') }}: </span><a href="{{ email.mail }}">{{ email.words }}</a></li>{% endif %}
+          {% if website %}<li><span class="hidden">{{ t('venue.website') }}: </span><a href="{{ website.url }}" rel="noopener noreferrer">{{ website.words }}</a></li>{% endif %}
+        </ul>
+      </dd>
+    </dl>
+    {% endif %}
+    {% if links is not empty %}
+    <dl>
+      <dt>{{ t('venue.elsewhere') }}</dt>
+      <dd>
+        <ul class="plain">
+          {% for link in links %}<li><a href="{{ link.url }}" rel="noopener noreferrer">{{ link.words }}</a></li>{% endfor %}
+        </ul>
+      </dd>
+    </dl>
+    {% endif %}
+  </aside>
+
+  <div class="event-main">
+    {# Said only of a description: a name in the other language is still its name. #}
+    {% if lang and paragraphs is not empty %}<p class="in-other">{{ t('venue.inOther') }}</p>{% endif %}
+    {% if paragraphs is not empty %}
+    <div class="description"{% if lang %} lang="{{ lang }}"{% endif %}>
+      {% for paragraph in paragraphs %}<p>{{ paragraph|nl2br }}</p>{% endfor %}
+    </div>
+    {% endif %}
+
+    <section class="coming-up" aria-labelledby="coming-up">
+      <h2 class="section-title" id="coming-up">{{ t('venue.comingUp') }}</h2>
+      {% if days is empty %}
+      <p class="quiet">{{ t('venue.nothingComing') }}</p>
+      <p><a href="{{ path('location', venue.location.ref) }}">{{ t('event.comingIn', venue.location.name) }}</a></p>
+      {% else %}
+      {% for day in days %}
+      <section class="day" aria-labelledby="day-{{ day.day }}">
+        <h3 id="day-{{ day.day }}">{{ day.heading }}{% if day.today %} <span class="today">{{ t('when.today') }}</span>{% endif %}</h3>
+        <ol class="events">
+          {% for line in day.lines %}
+          {% include 'parts/event-line.twig' with {name_level: 4} %}
+          {% endfor %}
+        </ol>
+      </section>
+      {% endfor %}
+      {% endif %}
+    </section>
+  </div>
+</div>

@@ -2,8 +2,11 @@
 <li class="ev{% if line.photo %} with-photo{% endif %}{% if line.cancelled %} cancelled{% endif %}">
   <p class="ev-when">{{ line.when }}</p>
   <div class="ev-body">
-    <h3 class="ev-name"><a href="{{ path('event', line.ref) }}"{% if line.lang %} lang="{{ line.lang }}"{% endif %}>{{ line.name }}</a></h3>
-    <p class="ev-where">{{ line.where }}{% if line.until %} · {{ line.until }}{% endif %}{% if line.more %} · {{ line.more }}{% endif %}</p>
+    {# A heading one below its day's: h3 in the listing, h4 where the days are themselves under a section. #}
+    {% set level = name_level ?? 3 %}
+    <h{{ level }} class="ev-name"><a href="{{ path('event', line.ref) }}"{% if line.lang %} lang="{{ line.lang }}"{% endif %}>{{ line.name }}</a></h{{ level }}>
+    {% set where = [line.where, line.until, line.more]|filter(part => part) %}
+    {% if where is not empty %}<p class="ev-where">{{ where|join(' · ') }}</p>{% endif %}
     {% if line.cancelled or line.price or line.categories or line.rating %}
     <p class="ev-meta">
       {% if line.cancelled %}<span class="mark">{{ t('line.cancelled') }}</span>{% endif %}

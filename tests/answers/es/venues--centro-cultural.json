@@ -1,0 +1,96 @@
+{
+    "status": 200,
+    "answer": {
+        "data": {
+            "ref": "centro-cultural",
+            "name": "Centro Cultural",
+            "description": null,
+            "language": "es",
+            "status": "published",
+            "location": {
+                "ref": "motril",
+                "name": "Motril",
+                "description": null,
+                "language": "es",
+                "region": {
+                    "ref": "granada",
+                    "name": "Granada",
+                    "description": null,
+                    "language": "es"
+                }
+            },
+            "venue_type": {
+                "ref": "sala",
+                "name": "Sala",
+                "description": null,
+                "language": "es"
+            },
+            "phone": null,
+            "email": null,
+            "website": null,
+            "lat": null,
+            "lng": null,
+            "social_links": [],
+            "photos": [],
+            "organiser": null,
+            "upcoming_events": [
+                {
+                    "ref": "el-espiritu-de-la-colmena",
+                    "name": "El espíritu de la colmena",
+                    "description": "Proyección de la película de Víctor Erice, de 1973.",
+                    "language": "es",
+                    "status": "published",
+                    "price_from": null,
+                    "photo": null,
+                    "rating": null,
+                    "review_count": 0,
+                    "categories": [
+                        {
+                            "ref": "cine",
+                            "name": "Cine",
+                            "description": null,
+                            "language": "es"
+                        }
+                    ],
+                    "occurrences": [
+                        {
+                            "ref": "xuyfmlxn",
+                            "all_day": false,
+                            "starts_at": "2026-11-04T20:00",
+                            "finishes_at": null,
+                            "cancelled": false
+                        }
+                    ]
+                },
+                {
+                    "ref": "cria-cuervos",
+                    "name": "Cría cuervos",
+                    "description": "Proyección de la película de Carlos Saura, de 1976.",
+                    "language": "es",
+                    "status": "published",
+                    "price_from": null,
+                    "photo": null,
+                    "rating": null,
+                    "review_count": 0,
+                    "categories": [
+                        {
+                            "ref": "cine",
+                            "name": "Cine",
+                            "description": null,
+                            "language": "es"
+                        }
+                    ],
+                    "occurrences": [
+                        {
+                            "ref": "2kaltumm",
+                            "all_day": false,
+                            "starts_at": "2026-11-08T20:00",
+                            "finishes_at": null,
+                            "cancelled": false
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

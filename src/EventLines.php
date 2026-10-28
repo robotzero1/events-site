@@ -91,11 +91,11 @@ final class EventLines
         ];
     }
 
-    private function where(array $event): string
+    /** Its Venue and Location, or null for a line that names neither, as a Venue's own coming events do. */
+    private function where(array $event): ?string
     {
-        $location = $event['location']['name'] ?? '';
-        $venue = $event['venue']['name'] ?? null;
+        $places = array_filter([$event['venue']['name'] ?? null, $event['location']['name'] ?? null]);
 
-        return $venue !== null ? "{$venue}, {$location}" : $location;
+        return $places === [] ? null : implode(', ', $places);
     }
 }

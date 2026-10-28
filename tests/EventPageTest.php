@@ -236,6 +236,17 @@ final class EventPageTest extends TestCase
         $this->assertSame('Worth the trip', $this->text($page, '//section[@class="earlier"]//li[@class="review"]/h4'));
     }
 
+    public function test_a_source_address_that_is_not_a_web_page_is_not_linked(): void
+    {
+        $fair = self::fair();
+        $fair['data']['source_url'] = 'javascript:alert(1)';
+        $this->api->instead('/events/book-fair', $fair);
+
+        $page = $this->page($this->visit('/en/event/book-fair'));
+
+        $this->assertSame(0, $page->query('//p[@class="more"]')->length);
+    }
+
     public function test_an_event_that_is_not_there_is_not_found(): void
     {
         $response = $this->visit('/en/event/no-such-event');
